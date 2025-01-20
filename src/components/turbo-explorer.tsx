@@ -1,0 +1,76 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import GamesList from './games-list'
+import { Box, Clock, ArrowRight, Plus } from 'lucide-react'
+
+export interface Game {
+  id: number
+  name: string
+  sessions: number
+  interactions: number
+}
+
+export default function TurboExplorer() {
+  const [games, setGames] = useState<Game[]>([
+    { id: 1, name: 'Tic Tac Toe', sessions: 100, interactions: 500 },
+    { id: 2, name: 'Chess', sessions: 75, interactions: 300 },
+    { id: 3, name: 'Sudoku', sessions: 50, interactions: 200 },
+  ])
+
+  const totalSessions = games.reduce((sum, game) => sum + game.sessions, 0)
+  const totalInteractions = games.reduce((sum, game) => sum + game.interactions, 0)
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-8">
+      <h1 className="text-3xl font-bold mb-6">Turbo Explorer</h1>
+      
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-white shadow-md rounded-lg p-6 flex items-center space-x-4">
+          <div className="p-2">
+            <Box className="w-6 h-6 text-gray-600" />
+          </div>
+          <div>
+            <div className="text-2xl font-bold">{games.length}</div>
+            <div className="text-gray-600">Total Games</div>
+          </div>
+        </div>
+        
+        <div className="bg-white shadow-md rounded-lg p-6 flex items-center space-x-4">
+          <div className="p-2">
+            <Clock className="w-6 h-6 text-gray-600" />
+          </div>
+          <div>
+            <div className="text-2xl font-bold">{totalSessions}</div>
+            <div className="text-gray-600">Total Sessions</div>
+          </div>
+        </div>
+        
+        <div className="bg-white shadow-md rounded-lg p-6 flex items-center space-x-4">
+          <div className="p-2">
+            <ArrowRight className="w-6 h-6 text-gray-600" />
+          </div>
+          <div>
+            <div className="text-2xl font-bold">{totalInteractions}</div>
+            <div className="text-gray-600">Total Interactions</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Games List */}
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-semibold">Games List</h2>
+          <Link href="/add-game" className="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center">
+            <Plus className="w-5 h-5 mr-2" />
+            Add New Game
+          </Link>
+        </div>
+        <GamesList games={games} />
+      </div>
+    </div>
+  )
+}
+

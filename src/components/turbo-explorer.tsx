@@ -18,6 +18,35 @@ export interface Game {
   game_id: string,
   sessions: number,
   interactions: number,
+  slug: string,
+  created_at: Date,
+  updated_at: Date,
+}
+
+export interface Session {
+  id: number,
+  app_id: number,
+  session_id: string,
+  topic: string,
+  interactions: number,
+  created_at: Date,
+  updated_at: Date,
+}
+
+export interface SessionEvent {
+  id: number,
+  session_id: number,
+  peer_id: string,
+  event: string,
+  created_at: Date,
+}
+
+export interface Interaction {
+  id: number,
+  session_id: number,
+  peer_id: string,
+  body: string,
+  created_at: Date,
 }
 
 export default function TurboExplorer() {
@@ -29,7 +58,8 @@ export default function TurboExplorer() {
   //How we'll pull the games from the API
   useEffect(() => {
     if(!loaded){
-      //console.log("Ping");
+      console.log("Pulling game objects from API backend...");
+      setLoaded(true);
       let url = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT!+'/apps'
       axios.get(url, {headers: {"Access-Control-Allow-Origin": "*"}}).then((r) => {
         let newGames : Game[] = [];
@@ -42,12 +72,14 @@ export default function TurboExplorer() {
             game_id: r.data[i].game_id,
             sessions: r.data[i].session_count,
             interactions: r.data[i].interaction_count,
+            slug: r.data[i].slug,
+            created_at: r.data[i].created_at,
+            updated_at: r.data[i].updated_at,
           }
           newGames.push(newGame);
         }
         setGames(newGames);
       })
-      setLoaded(true);
     }
   })
 

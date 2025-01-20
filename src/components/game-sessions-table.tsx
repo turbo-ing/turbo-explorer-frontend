@@ -1,15 +1,9 @@
 import Link from 'next/link'
 import { Eye, ChevronLeft, ChevronRight } from 'lucide-react'
-
-interface GameSession {
-  id: string
-  topicId: string
-  dateTime: string
-  interactionCount: number
-}
+import { Session } from './turbo-explorer'
 
 interface GameSessionsTableProps {
-  sessions: GameSession[]
+  sessions: Session[]
   currentPage: number
   totalPages: number
   onPageChange: (page: number) => void
@@ -42,9 +36,9 @@ export default function GameSessionsTable({ sessions, currentPage, totalPages, o
           {sessions.map((session) => (
             <tr key={session.id}>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{session.id}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.topicId}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(session.dateTime).toLocaleString()}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.interactionCount}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.topic}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(session.created_at).toLocaleString()}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.interactions}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <Link href={`/session/${session.id}`} className="text-indigo-600 hover:text-indigo-900">
                   <Eye className="w-5 h-5" />

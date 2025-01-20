@@ -1,11 +1,5 @@
 import { UserPlus, UserMinus } from 'lucide-react'
-
-interface SessionEvent {
-  id: string
-  type: 'join' | 'leave'
-  user: string
-  timestamp: string
-}
+import { SessionEvent } from './turbo-explorer'
 
 interface SessionTimelineProps {
   events: SessionEvent[]
@@ -20,9 +14,9 @@ export default function SessionTimeline({ events }: SessionTimelineProps) {
         {events.map((event, index) => (
           <div key={event.id} className="mb-4 flex items-center">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center z-10 ${
-              event.type === 'join' ? 'bg-green-500' : 'bg-red-500'
+              event.event === 'JOIN' ? 'bg-green-500' : 'bg-red-500'
             }`}>
-              {event.type === 'join' ? (
+              {event.event === 'JOIN' ? (
                 <UserPlus className="w-4 h-4 text-white" />
               ) : (
                 <UserMinus className="w-4 h-4 text-white" />
@@ -30,10 +24,10 @@ export default function SessionTimeline({ events }: SessionTimelineProps) {
             </div>
             <div className="ml-4 flex-grow">
               <p className="font-medium">
-                {event.user} {event.type === 'join' ? 'joined' : 'left'} the session
+                {event.peer_id} {event.event === 'JOIN' ? 'joined' : 'left'} the session
               </p>
               <p className="text-sm text-gray-500">
-                {new Date(event.timestamp).toLocaleString()}
+                {new Date(event.created_at).toLocaleString()}
               </p>
             </div>
           </div>

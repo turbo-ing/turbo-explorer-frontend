@@ -1,38 +1,50 @@
 import { ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Interaction } from './turbo-explorer'
+import { EasyCelestia } from 'easy-celestia'
 
-interface SessionAction {
-  id: string
-  type: string
-  data: any
-  timestamp: string
-  user: string
-}
-
-interface SessionActionsListProps {
-  actions: SessionAction[]
+interface interactionsListProps {
+  actions: Interaction[]
   currentPage: number
   totalPages: number
   onPageChange: (page: number) => void
 }
 
-export default function SessionActionsList({ actions, currentPage, totalPages, onPageChange }: SessionActionsListProps) {
+const celestia = new EasyCelestia({
+  //don't need credentials to use namespace() function.
+  network: 'mocha',
+  nodeEndpoint: '',
+  nodeApiKey: '',
+  celeniumApiKey: '',
+});
+
+function formatNamespaceURL(namespace : string): string {
+  let shrunkNamespace;
+  if(namespace.length > 56){
+    shrunkNamespace = namespace.substring(namespace.length-56, namespace.length);
+  } else shrunkNamespace = namespace;
+  return `https://mocha-4.celenium.io/namespace/`+shrunkNamespace+"?tab=Blobs";
+}
+
+export default function SessionActionsList({ actions, currentPage, totalPages, onPageChange }: interactionsListProps) {
+  //console.log(celestia.namespace((JSON.parse(actions[0].body).ns)).toString('hex'));
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
-      <h2 className="text-xl font-semibold mb-4">Session Actions</h2>
+      <p>INTERACTION COUNT: {actions.length}</p>
+      <h2 className="text-xl font-semibold mb-4">Session Interactions</h2>
       <div className="space-y-4">
         {actions.map((action) => (
           <div key={action.id} className="border rounded-lg p-4">
             <div className="flex justify-between items-start mb-2">
-              <span className="font-medium">{action.type}</span>
-              <span className="text-sm text-gray-500">{new Date(action.timestamp).toLocaleString()}</span>
+              <span className="font-medium">{JSON.parse(action.body).data.type}</span>
+              <span className="text-sm text-gray-500">{new Date(action.created_at).toLocaleString()}</span>
             </div>
             <pre className="bg-gray-100 p-2 rounded text-sm overflow-x-auto mb-2">
-              {JSON.stringify(action.data, null, 2)}
+              {JSON.stringify(JSON.parse(action.body).data.payload, null, 2)}
             </pre>
             <div className="flex justify-between items-center mt-2">
-              <span className="text-sm text-gray-600">By {action.user}</span>
+              <span className="text-sm text-gray-600">By {action.peer_id}</span>
               <a
-                href={`https://celenium.com/action/${action.id}`}
+                href={formatNamespaceURL(celestia.namespace((JSON.parse(action.body).ns)).toString('hex'))}//TODO: find a way to get namespace from the thing
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-blue-600 hover:underline text-sm"

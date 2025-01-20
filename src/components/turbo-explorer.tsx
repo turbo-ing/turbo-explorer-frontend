@@ -1,23 +1,63 @@
 'use client'
 
-import { useState } from 'react'
-import Link from 'next/link'
-import GamesList from './games-list'
-import { Box, Clock, ArrowRight, Plus } from 'lucide-react'
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import GamesList from './games-list';
+import { Box, Clock, ArrowRight, Plus } from 'lucide-react';
+import axios from 'axios';
+import { config } from 'dotenv';
+
+config();
 
 export interface Game {
-  id: number
-  name: string
-  sessions: number
-  interactions: number
+  id: number,
+  name: string,
+  description: string,
+  icon?: string,
+  domain_name: string,
+  game_id: string,
+  sessions: number,
+  interactions: number,
 }
 
 export default function TurboExplorer() {
-  const [games, setGames] = useState<Game[]>([
+
+  //Where we'll store the games we pull from the API
+  const [games, setGames] = useState<Game[]>([])
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  //How we'll pull the games from the API
+  useEffect(() => {
+    if(!loaded){
+      //console.log("Ping");
+      let url = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT!+'/apps'
+      axios.get(url, {headers: {"Access-Control-Allow-Origin": "*"}}).then((r) => {
+        let newGames : Game[] = [];
+        for(let i=0; i<r.data.length; i++){
+          const newGame : Game = {
+            id: r.data[i].id,
+            name: r.data[i].name,
+            description: r.data[i].description,
+            domain_name: r.data[i].domain_name,
+            game_id: r.data[i].game_id,
+            sessions: r.data[i].session_count,
+            interactions: r.data[i].interaction_count,
+          }
+          newGames.push(newGame);
+        }
+        setGames(newGames);
+      })
+      setLoaded(true);
+    }
+  })
+
+
+
+  /*const [games, setGames] = useState<Game[]>([
     { id: 1, name: 'Tic Tac Toe', sessions: 100, interactions: 500 },
     { id: 2, name: 'Chess', sessions: 75, interactions: 300 },
     { id: 3, name: 'Sudoku', sessions: 50, interactions: 200 },
-  ])
+  ])*/
 
   const totalSessions = games.reduce((sum, game) => sum + game.sessions, 0)
   const totalInteractions = games.reduce((sum, game) => sum + game.interactions, 0)

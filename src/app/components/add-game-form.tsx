@@ -1,7 +1,7 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import { Game } from './turbo-explorer'
+import { Game } from '@/components/turbo-explorer'
 
 interface AddGameFormProps {
   onAddGame: (game: Omit<Game, 'id'>) => void

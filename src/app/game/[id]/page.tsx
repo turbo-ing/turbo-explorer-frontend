@@ -46,7 +46,7 @@ export default function GamePage() {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen text-gray-600 bg-gray-100 p-8">
       <Link href="/" className="inline-flex items-center text-blue-600 hover:underline mb-4">
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to Games List

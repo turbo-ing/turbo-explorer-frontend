@@ -39,18 +39,23 @@ export default function SessionPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const actionsPerPage = 5
 
+  //const mock1 : SessionEvent = { id: 'E1', type: 'join', user: 'Alice', timestamp: '2023-05-20T10:00:00Z' };
+  const mockSessionEvent : SessionEvent[] = 
+    [
+      { id: 'E1', type: 'join', user: 'Alice', timestamp: '2023-05-20T10:00:00Z' },
+      { id: 'E2', type: 'join', user: 'Bob', timestamp: '2023-05-20T10:05:00Z' },
+      { id: 'E3', type: 'leave', user: 'Alice', timestamp: '2023-05-20T10:30:00Z' },
+      { id: 'E4', type: 'join', user: 'Charlie', timestamp: '2023-05-20T10:35:00Z' },
+      { id: 'E5', type: 'leave', user: 'Bob', timestamp: '2023-05-20T11:00:00Z' },
+    ];
+  
+
   useEffect(() => {
     // In a real application, you would fetch the session data from an API
     // For this example, we'll use mock data
     const mockSession = {
       id: params.id as string,
-      events: [
-        { id: 'E1', type: 'join', user: 'Alice', timestamp: '2023-05-20T10:00:00Z' },
-        { id: 'E2', type: 'join', user: 'Bob', timestamp: '2023-05-20T10:05:00Z' },
-        { id: 'E3', type: 'leave', user: 'Alice', timestamp: '2023-05-20T10:30:00Z' },
-        { id: 'E4', type: 'join', user: 'Charlie', timestamp: '2023-05-20T10:35:00Z' },
-        { id: 'E5', type: 'leave', user: 'Bob', timestamp: '2023-05-20T11:00:00Z' },
-      ],
+      events : mockSessionEvent,
       actions: Array.from({ length: 20 }, (_, i) => ({
         id: `A${i + 1}`,
         type: i % 2 === 0 ? 'move' : 'chat',
@@ -86,7 +91,7 @@ export default function SessionPage() {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
   return (
-    <div className="min-h-screen bg-gray-100 p-8">
+    <div className="min-h-screen text-gray-600 bg-gray-100 p-8">
       <Link href="/game/1" className="inline-flex items-center text-blue-600 hover:underline mb-4">
         <ArrowLeft className="w-4 h-4 mr-2" />
         Back to Game

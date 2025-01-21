@@ -5,7 +5,6 @@ import { ArrowLeft } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { Game } from './turbo-explorer';
-import axios from 'axios';
 import api from '@/util/api';
 
 export default function AddGameForm() {

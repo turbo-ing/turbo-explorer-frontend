@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import GamesList from './games-list';
 import { Box, Clock, ArrowRight, Plus } from 'lucide-react';
-import axios from 'axios';
 import { config } from 'dotenv';
 import api from '@/util/api';
 
@@ -59,7 +58,7 @@ export default function TurboExplorer() {
   useEffect(() => {    
       console.log("Pulling game objects from API backend...");
       api.get('/apps').then((r) => {
-        let newGames : Game[] = [];
+        const newGames : Game[] = [];
         for(let i=0; i<r.data.length; i++){
           const newGame : Game = {
             id: r.data[i].id,

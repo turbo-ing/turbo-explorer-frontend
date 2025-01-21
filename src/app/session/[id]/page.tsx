@@ -7,7 +7,6 @@ import { ArrowLeft } from 'lucide-react'
 import SessionTimeline from '@/components/session-timeline'
 import SessionActionsList from '@/components/session-actions-list'
 import ZKProofSection from '@/components/zk-proof-section'
-import axios from 'axios'
 import {
   Session, SessionEvent, Interaction,/*zkProof*/
   Game
@@ -29,7 +28,7 @@ import api from '@/util/api'
   user: string
 }*/
 
-interface ZKProof {
+export interface ZKProof {
   id: string
   gameState: object
 }
@@ -46,6 +45,7 @@ export default function SessionPage() {
   const actionsPerPage = 5;
 
   useEffect(() => {
+    setZkProofs([])
     console.log(params.id);
     if (!loaded) {
       setLoaded(true);
@@ -67,7 +67,7 @@ export default function SessionPage() {
         setSession(newSession);
         //pull sessionEvents from our session ID
         api.get('/session-events/sessionId/' + r.data.id).then((r2) => {
-          let newSessionEvents: SessionEvent[] = [];
+          const newSessionEvents: SessionEvent[] = [];
           for (let i = 0; i < r2.data.length; i++) {
             const newSessionEvent: SessionEvent = {
               id: r2.data[i].id,
@@ -82,7 +82,7 @@ export default function SessionPage() {
 
           //pull interactions from our session ID
           api.get('/interactions/sessionId/' + r.data.id).then((r3) => {
-            let newInteractions: Interaction[] = [];
+            const newInteractions: Interaction[] = [];
             for (let j = 0; j < r3.data.length; j++) {
               const newInteraction: Interaction = {
                 id: r3.data[j].id,
@@ -116,7 +116,7 @@ export default function SessionPage() {
         })
       })
     }
-  }, [params.id])
+  }, [params.id, loaded])
 
   if (!session) {
     return <div className="p-8">Loading...</div>

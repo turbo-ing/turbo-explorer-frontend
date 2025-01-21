@@ -7,12 +7,11 @@ import { ArrowLeft } from 'lucide-react'
 import GameSessionsTable from '@/components/game-sessions-table'
 import { Game } from '@/components/turbo-explorer'
 import { Session } from '@/components/turbo-explorer'
-import { SessionEvent } from '@/components/turbo-explorer'
-import { Interaction } from '@/components/turbo-explorer'
-import axios from 'axios';
+// import { SessionEvent } from '@/components/turbo-explorer'
+// import { Interaction } from '@/components/turbo-explorer'
 import api from '@/util/api'
 
-interface GameSession {
+export interface GameSession {
   id: string
   topicId: string
   dateTime: string
@@ -55,7 +54,7 @@ export default function GamePage() {
         //grab the sessions from the game ID of our URL slug we just pulled
         console.log("Grabbing sessions of game with ID "+r.data.id+" from API backend...")
         api.get('/sessions/appId/'+r.data.id).then((r2) => {
-          let newSessions : Session[] = [];
+          const newSessions : Session[] = [];
           for(let i=0; i<r2.data.length; i++){
             const newSession : Session = {
               id: r2.data[i].id,
@@ -72,7 +71,7 @@ export default function GamePage() {
         })
       })
     }
-  }, [params.id])
+  }, [params.id, loaded])
     // In a real application, you would fetch the game data from an API
     // For this example, we'll use mock data
     /*const mockGame = {

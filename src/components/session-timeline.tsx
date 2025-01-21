@@ -11,7 +11,7 @@ export default function SessionTimeline({ events }: SessionTimelineProps) {
       <h2 className="text-xl font-semibold mb-4">Session Timeline</h2>
       <div className="relative">
         <div className="absolute top-0 bottom-0 left-4 w-0.5 bg-gray-200" />
-        {events.map((event, index) => (
+        {events.map((event) => (
           <div key={event.id} className="mb-4 flex items-center">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center z-10 ${
               event.event === 'JOIN' ? 'bg-green-500' : 'bg-red-500'

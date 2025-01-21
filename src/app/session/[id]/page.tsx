@@ -8,8 +8,11 @@ import SessionTimeline from '@/components/session-timeline'
 import SessionActionsList from '@/components/session-actions-list'
 import ZKProofSection from '@/components/zk-proof-section'
 import axios from 'axios'
-import { Session, SessionEvent, Interaction,/*zkProof*/ 
-Game} from '@/components/turbo-explorer'
+import {
+  Session, SessionEvent, Interaction,/*zkProof*/
+  Game
+} from '@/components/turbo-explorer'
+import api from '@/util/api'
 
 /*interface SessionEvent {
   id: string
@@ -44,16 +47,15 @@ export default function SessionPage() {
 
   useEffect(() => {
     console.log(params.id);
-    if(!loaded){
+    if (!loaded) {
       setLoaded(true);
-      console.log("Grabbing session with ID "+params.id+" from API backend...")
+      console.log("Grabbing session with ID " + params.id + " from API backend...")
       //grab the session at correct url (session by id)
 
       //TODO  write backend gfunction to let me do this call
-      let url = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT!+'/sessions/id/'+params.id;
-      axios.get(url, {headers: {"Access-Control-Allow-Origin": "*"}}).then((r) => {
+      api.get('/sessions/id/' + params.id).then((r) => {
         console.log(r.data);
-        const newSession : Session = {
+        const newSession: Session = {
           id: r.data.id,
           app_id: r.data.app_id,
           session_id: r.data.session_id,
@@ -64,11 +66,10 @@ export default function SessionPage() {
         }
         setSession(newSession);
         //pull sessionEvents from our session ID
-        let url2 = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT!+'/session-events/sessionId/'+r.data.id;
-        axios.get(url2, {headers: {"Access-Control-Allow-Origin": "*"}}).then((r2) => {
-          let newSessionEvents : SessionEvent[] = [];
-          for(let i=0; i<r2.data.length; i++){
-            const newSessionEvent : SessionEvent = {
+        api.get('/session-events/sessionId/' + r.data.id).then((r2) => {
+          let newSessionEvents: SessionEvent[] = [];
+          for (let i = 0; i < r2.data.length; i++) {
+            const newSessionEvent: SessionEvent = {
               id: r2.data[i].id,
               session_id: r2.data[i].session_id,
               peer_id: r2.data[i].peer_id,
@@ -80,11 +81,10 @@ export default function SessionPage() {
           setSessionEvents(newSessionEvents);
 
           //pull interactions from our session ID
-          let url3 = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT!+'/interactions/sessionId/'+r.data.id;
-          axios.get(url3, {headers: {"Access-Control-Allow-Origin": "*"}}).then((r3) => {
-            let newInteractions : Interaction[] = [];
-            for(let j=0; j<r3.data.length; j++){
-              const newInteraction : Interaction = {
+          api.get('/interactions/sessionId/' + r.data.id).then((r3) => {
+            let newInteractions: Interaction[] = [];
+            for (let j = 0; j < r3.data.length; j++) {
+              const newInteraction: Interaction = {
                 id: r3.data[j].id,
                 session_id: r3.data[j].session_id,
                 peer_id: r3.data[j].peer_id,
@@ -96,10 +96,9 @@ export default function SessionPage() {
             setInteractions(newInteractions);
 
             //Lastly, just grab the app again so we have the slug for "back".
-            let url = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT!+'/apps/'+r.data.app_id;
-            axios.get(url, {headers: {"Access-Control-Allow-Origin": "*"}}).then((r4) => {
+            api.get('/apps/' + r.data.app_id).then((r4) => {
               console.log(r4.data);
-              const newGame : Game = {
+              const newGame: Game = {
                 id: r4.data.id,
                 name: r4.data.name,
                 description: r4.data.description,
@@ -137,11 +136,11 @@ export default function SessionPage() {
         Back to Game
       </Link>
       <h1 className="text-3xl font-bold mb-6">Session Details: {session.id}</h1>
-      
+
       <div className="space-y-8">
         <SessionTimeline events={sessionEvents} />
         <ZKProofSection proofs={zkProofs} />
-        <SessionActionsList 
+        <SessionActionsList
           actions={currentInteractions}
           currentPage={currentPage}
           totalPages={totalPages}

@@ -5,7 +5,7 @@ import GamesList from './games-list'
 import StatsBar from './stats-bar'
 import AddGameForm from './add-game-form'
 
-interface Game {
+export interface Game {
   id: number
   name: string
   sessions: number

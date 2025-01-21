@@ -10,6 +10,7 @@ import { Session } from '@/components/turbo-explorer'
 import { SessionEvent } from '@/components/turbo-explorer'
 import { Interaction } from '@/components/turbo-explorer'
 import axios from 'axios';
+import api from '@/util/api'
 
 interface GameSession {
   id: string
@@ -36,8 +37,7 @@ export default function GamePage() {
       setLoaded(true);
       console.log("Grabbing game with slug "+params.id+" from API backend...")
       //grab the game at correct url (apps by id)
-      let url = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT!+'/apps/slug/'+params.id;
-      axios.get(url, {headers: {"Access-Control-Allow-Origin": "*"}}).then((r) => {
+      api.get('/apps/slug/'+params.id).then((r) => {
         console.log(r.data);
         const newGame : Game = {
           id: r.data.id,
@@ -54,8 +54,7 @@ export default function GamePage() {
         setGame(newGame);
         //grab the sessions from the game ID of our URL slug we just pulled
         console.log("Grabbing sessions of game with ID "+r.data.id+" from API backend...")
-        let url2 = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT!+'/sessions/appId/'+r.data.id;
-        axios.get(url2, {headers: {"Access-Control-Allow-Origin": "*"}}).then((r2) => {
+        api.get('/sessions/appId/'+r.data.id).then((r2) => {
           let newSessions : Session[] = [];
           for(let i=0; i<r2.data.length; i++){
             const newSession : Session = {

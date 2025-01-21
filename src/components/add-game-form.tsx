@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { Game } from './turbo-explorer';
 import axios from 'axios';
+import api from '@/util/api';
 
 export default function AddGameForm() {
   const { register, handleSubmit, formState: { errors } } = useForm<Partial<Game>>()
@@ -13,14 +14,32 @@ export default function AddGameForm() {
 
   const onSubmit = async (data: Partial<Game>) => {
     // Here you would typically send the data to your backend
-    const url = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT!+'/apps/addApp?name='+data.name+'&description='+data.description+'&domain_name='+data.domain_name+'&game_id='+data.game_id;
-    axios.post(url, {headers: {"Access-Control-Allow-Origin": "*"}}).then((r) => {
-      console.log(data)
-      console.log(r.data)
-      // For now, we'll just redirect back to the main page
-      router.push('/')
-    })
-  }
+
+    try {
+      // Validate input data and ensure required fields are non-undefined
+      const name = data.name ?? '';
+      const description = data.description ?? '';
+      const domain_name = data.domain_name ?? '';
+      const game_id = data.game_id ?? '';
+
+      if (!name || !description || !domain_name || !game_id) {
+        throw new Error('All fields are required.');
+      }
+
+      // Construct query string using URLSearchParams
+      const params = new URLSearchParams({ name, description, domain_name, game_id });
+
+      // Send API request
+      const response = await api.post(`/apps/addApp?${params.toString()}`);
+      console.log('Submitted data:', data);
+      console.log('Response data:', response.data);
+
+      await router.push('/');
+    } catch (error) {
+      console.error('Error submitting data:', error);
+      alert('Failed to submit. Please try again.');
+    }
+  };
 
   return (
     <div>
@@ -43,7 +62,7 @@ export default function AddGameForm() {
           <div>
             <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
             <input
-              {...register('description', { required: 'Description is required'})}
+              {...register('description', { required: 'Description is required' })}
               type="text"
               id="description"
               className="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -53,7 +72,7 @@ export default function AddGameForm() {
           <div>
             <label htmlFor="domain_name" className="block text-sm font-medium text-gray-700">Domain Name</label>
             <input
-              {...register('domain_name', { required: 'Domain name is required'})}
+              {...register('domain_name', { required: 'Domain name is required' })}
               type="text"
               id="domain_name"
               className="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
@@ -63,7 +82,7 @@ export default function AddGameForm() {
           <div>
             <label htmlFor="game_id" className="block text-sm font-medium text-gray-700">Game ID / Slug</label>
             <input
-              {...register('game_id', { required: 'Game ID / Slug is required'})}
+              {...register('game_id', { required: 'Game ID / Slug is required' })}
               type="text"
               id="game_id"
               className="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"

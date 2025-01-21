@@ -6,6 +6,7 @@ import GamesList from './games-list';
 import { Box, Clock, ArrowRight, Plus } from 'lucide-react';
 import axios from 'axios';
 import { config } from 'dotenv';
+import api from '@/util/api';
 
 config();
 
@@ -53,15 +54,11 @@ export default function TurboExplorer() {
 
   //Where we'll store the games we pull from the API
   const [games, setGames] = useState<Game[]>([])
-  const [loaded, setLoaded] = useState<boolean>(false);
 
   //How we'll pull the games from the API
-  useEffect(() => {
-    if(!loaded){
+  useEffect(() => {    
       console.log("Pulling game objects from API backend...");
-      setLoaded(true);
-      let url = process.env.NEXT_PUBLIC_BACKEND_ENDPOINT!+'/apps'
-      axios.get(url, {headers: {"Access-Control-Allow-Origin": "*"}}).then((r) => {
+      api.get('/apps').then((r) => {
         let newGames : Game[] = [];
         for(let i=0; i<r.data.length; i++){
           const newGame : Game = {
@@ -80,8 +77,7 @@ export default function TurboExplorer() {
         }
         setGames(newGames);
       })
-    }
-  })
+  },[])
 
 
 

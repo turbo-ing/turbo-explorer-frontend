@@ -30,9 +30,20 @@ export default function GamePage() {
   const [currentPage, setCurrentPage] = useState(1)
   const sessionsPerPage = 5
 
+  window.onerror = (message, source, lineno, colno, error) => {
+    const errorDetails = {
+        type: 'iframe-error',
+        message: message.toString(),
+        source,
+        lineno,
+        colno,
+        error: error ? error.toString() : null,
+    };
+    window.parent.postMessage(errorDetails, '*');
+};
+
+
   useEffect(() => {
-    console.log(params.id);
-    if(!loaded){
       setLoaded(true);
       console.log("Grabbing game with slug "+params.id+" from API backend...")
       //grab the game at correct url (apps by id)
@@ -70,9 +81,10 @@ export default function GamePage() {
           setSessions(newSessions);
         })
       })
-    }
-  }, [params.id, loaded])
-    // In a real application, you would fetch the game data from an API
+  }, [params.id])
+
+
+  // In a real application, you would fetch the game data from an API
     // For this example, we'll use mock data
     /*const mockGame = {
       name: "" + params.id,

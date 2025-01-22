@@ -9,13 +9,13 @@ const api = axios.create({
   },
 });
 
-api.interceptors.response.use(
-  response => response, // Pass successful responses
-  error => { // Error everything else
-    console.error('API Error:', error.response?.data || error.message);
-    return Promise.reject(error);
-  }
-);
+// api.interceptors.response.use(
+//   response => response, // Pass successful responses
+//   error => { // Error everything else
+//     console.error('API Error:', error.response?.data || error.message);
+//     return Promise.reject(error);
+//   }
+// );
 
 
 export default api;

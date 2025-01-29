@@ -142,6 +142,7 @@ export default function SessionPage() {
         <SessionTimeline events={sessionEvents} />
         <ZKProofSection proofs={zkProofs} />
         <SessionActionsList 
+          allActions={interactions}
           actions={currentInteractions}
           currentPage={currentPage}
           totalPages={totalPages}

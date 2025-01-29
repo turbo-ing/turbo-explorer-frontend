@@ -105,6 +105,7 @@ export default function GamePage() {
       </Link>
       <h1 className="text-3xl font-bold mb-6">{game.name}</h1>
       <GameSessionsTable 
+        allSessions={sessions}
         sessions={currentSessions} 
         currentPage={currentPage}
         totalPages={totalPages}

@@ -3,13 +3,14 @@ import { Eye, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Session } from './turbo-explorer'
 
 interface GameSessionsTableProps {
+  allSessions: Session[]
   sessions: Session[]
   currentPage: number
   totalPages: number
   onPageChange: (page: number) => void
 }
 
-export default function GameSessionsTable({ sessions, currentPage, totalPages, onPageChange }: GameSessionsTableProps) {
+export default function GameSessionsTable({ allSessions, sessions, currentPage, totalPages, onPageChange }: GameSessionsTableProps) {
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden">
       <table className="min-w-full divide-y divide-gray-200">
@@ -68,8 +69,8 @@ export default function GameSessionsTable({ sessions, currentPage, totalPages, o
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-gray-700">
-              Showing <span className="font-medium">{(currentPage - 1) * 5 + 1}</span> to <span className="font-medium">{Math.min(currentPage * 5, sessions.length)}</span> of{' '}
-              <span className="font-medium">{sessions.length}</span> results
+              Showing <span className="font-medium">{(currentPage - 1) * 5 + 1}</span> to <span className="font-medium">{Math.min(currentPage * 5, allSessions.length)}</span> of{' '}
+              <span className="font-medium">{allSessions.length}</span> results
             </p>
           </div>
           <div>

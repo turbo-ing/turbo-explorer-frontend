@@ -3,6 +3,7 @@ import { Interaction } from './turbo-explorer'
 import { EasyCelestia } from 'easy-celestia'
 
 interface interactionsListProps {
+  allActions: Interaction[]
   actions: Interaction[]
   currentPage: number
   totalPages: number
@@ -25,11 +26,11 @@ function formatNamespaceURL(namespace : string): string {
   return `https://mocha-4.celenium.io/namespace/`+shrunkNamespace+"?tab=Blobs";
 }
 
-export default function SessionActionsList({ actions, currentPage, totalPages, onPageChange }: interactionsListProps) {
+export default function SessionActionsList({ allActions, actions, currentPage, totalPages, onPageChange }: interactionsListProps) {
   //console.log(celestia.namespace((JSON.parse(actions[0].body).ns)).toString('hex'));
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
-      <p>INTERACTION COUNT: {actions.length}</p>
+      <p>INTERACTION COUNT: {allActions.length}</p>
       <h2 className="text-xl font-semibold mb-4">Session Interactions</h2>
       <div className="space-y-4">
         {actions.map((action) => (
@@ -76,8 +77,8 @@ export default function SessionActionsList({ actions, currentPage, totalPages, o
         <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
           <div>
             <p className="text-sm text-gray-700">
-              Showing <span className="font-medium">{(currentPage - 1) * 5 + 1}</span> to <span className="font-medium">{Math.min(currentPage * 5, actions.length)}</span> of{' '}
-              <span className="font-medium">{actions.length}</span> results
+              Showing <span className="font-medium">{(currentPage - 1) * 5 + 1}</span> to <span className="font-medium">{Math.min(currentPage * 5, allActions.length)}</span> of{' '}
+              <span className="font-medium">{allActions.length}</span> results
             </p>
           </div>
           <div>

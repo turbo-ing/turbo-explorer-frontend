@@ -76,8 +76,9 @@ export default function GamePage() {
         Back to Games List
       </Link>
       <h1 className="text-3xl font-bold mb-6">{game.name}</h1>
-      <GameSessionsTable
-        sessions={currentSessions}
+      <GameSessionsTable 
+        allSessions={sessions}
+        sessions={currentSessions} 
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={paginate}

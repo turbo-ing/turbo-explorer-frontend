@@ -140,7 +140,8 @@ export default function SessionPage() {
       <div className="space-y-8">
         <SessionTimeline events={sessionEvents} />
         <ZKProofSection proofs={zkProofs} />
-        <SessionActionsList
+        <SessionActionsList 
+          allActions={interactions}
           actions={currentInteractions}
           currentPage={currentPage}
           totalPages={totalPages}

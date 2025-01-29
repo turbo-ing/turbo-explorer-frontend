@@ -39,7 +39,7 @@ export default function GameSessionsTable({ allSessions, sessions, currentPage, 
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{session.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.topic}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(session.created_at).toLocaleString()}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.interactions}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.interaction_count}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <Link href={`/session/${session.id}`} className="text-indigo-600 hover:text-indigo-900">
                   <Eye className="w-5 h-5" />

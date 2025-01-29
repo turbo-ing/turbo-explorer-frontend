@@ -44,6 +44,7 @@ export default function GamePage() {
 
         const { data: sessionsData } = await fetchSessionsByGameId(gameData.id);
         setSessions(sessionsData);
+        console.log(sessionsData);
       } catch (err: unknown) {
         if (isIframe) {
           sendMessageToParent((err as Error).message || 'An error occurred');

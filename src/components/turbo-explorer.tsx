@@ -28,7 +28,7 @@ export interface Session {
   app_id: number,
   session_id: string,
   topic: string,
-  interactions: number,
+  interaction_count: number,
   created_at: Date,
   updated_at: Date,
 }

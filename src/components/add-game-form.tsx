@@ -20,13 +20,14 @@ export default function AddGameForm() {
       const description = data.description ?? '';
       const domain_name = data.domain_name ?? '';
       const game_id = data.game_id ?? '';
+      const verification_key = data.verification_key ?? '';
 
-      if (!name || !description || !domain_name || !game_id) {
+      if (!name || !description || !domain_name || !game_id || !verification_key) {
         throw new Error('All fields are required.');
       }
 
       // Construct query string using URLSearchParams
-      const params = new URLSearchParams({ name, description, domain_name, game_id });
+      const params = new URLSearchParams({ name, description, domain_name, game_id, verification_key });
 
       // Send API request
       const response = await api.post(`/apps/addApp?${params.toString()}`);
@@ -82,6 +83,16 @@ export default function AddGameForm() {
             <label htmlFor="game_id" className="block text-sm font-medium text-gray-700">Game ID / Slug</label>
             <input
               {...register('game_id', { required: 'Game ID / Slug is required' })}
+              type="text"
+              id="game_id"
+              className="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+            />
+            {errors.interactions && <p className="mt-1 text-sm text-red-600">{errors.interactions.message}</p>}
+          </div>
+          <div>
+            <label htmlFor="verification_key" className="block text-sm font-medium text-gray-700">Verification key</label>
+            <input
+              {...register('verification_key', { required: 'Verification key is required' })}
               type="text"
               id="game_id"
               className="mt-1 block w-full text-gray-600 rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"

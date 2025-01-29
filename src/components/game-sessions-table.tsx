@@ -83,7 +83,7 @@ export default function GameSessionsTable({ allSessions, sessions, currentPage, 
                 <span className="sr-only">Previous</span>
                 <ChevronLeft className="h-5 w-5" aria-hidden="true" />
               </button>
-              {[...Array(totalPages)].map((_, i) => (
+              { /* TODO: stop this element array overflowing by tweaking the function */ [...Array(totalPages)].map((_, i) => (
                 <button
                   key={i}
                   onClick={() => onPageChange(i + 1)}

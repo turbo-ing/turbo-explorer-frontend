@@ -28,9 +28,11 @@ import api from '@/util/api'
   user: string
 }*/
 
-export interface ZKProof {
-  id: string
-  gameState: object
+export interface ZkProof {
+  id: string,
+  peer_id: string,
+  proof: string,
+  verification_key: string,
 }
 
 export default function SessionPage() {
@@ -40,7 +42,7 @@ export default function SessionPage() {
   const [session, setSession] = useState<Session | undefined>(undefined);
   const [sessionEvents, setSessionEvents] = useState<SessionEvent[]>([]);
   const [interactions, setInteractions] = useState<Interaction[]>([]);
-  const [zkProofs, setZkProofs] = useState([]);
+  const [zkProofs, setZkProofs] = useState<ZkProof[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const actionsPerPage = 5;
 
@@ -95,22 +97,40 @@ export default function SessionPage() {
             }
             setInteractions(newInteractions);
 
-            //Lastly, just grab the app again so we have the slug for "back".
-            api.get('/apps/' + r.data.app_id).then((r4) => {
-              console.log(r4.data);
-              const newGame: Game = {
-                id: r4.data.id,
-                name: r4.data.name,
-                description: r4.data.description,
-                domain_name: r4.data.domain_name,
-                game_id: r4.data.game_id,
-                sessions: r4.data.session_count,
-                interactions: r4.data.interaction_count,
-                slug: r4.data.slug,
-                created_at: r4.data.created_at,
-                updated_at: r4.data.updated_at,
+            //pull zkProofs from our session ID
+            api.get('/zkProofs/sessionId/' + r.data.id).then((r4) => {
+              console.log(r4);
+              const newZks: ZkProof[] = [];
+              for (let j = 0; j < r4.data.length; j++) {
+                const newZk: ZkProof = {
+                  id: r4.data[j].id,
+                  peer_id: r4.data[j].peer_id,
+                  proof: r4.data[j].proof,
+                  verification_key: r4.data[j].verification_key,
+                }
+                newZks.push(newZk);
               }
-              setGame(newGame);
+              setZkProofs(newZks);
+              console.log(zkProofs);
+
+              //Lastly, just grab the app again so we have the slug for "back".
+              api.get('/apps/' + r.data.app_id).then((r5) => {
+                console.log(r5.data);
+                const newGame: Game = {
+                  id: r5.data.id,
+                  name: r5.data.name,
+                  description: r5.data.description,
+                  domain_name: r5.data.domain_name,
+                  game_id: r5.data.game_id,
+                  verification_key: r5.data.verification_key,
+                  sessions: r5.data.session_count,
+                  interactions: r5.data.interaction_count,
+                  slug: r5.data.slug,
+                  created_at: r5.data.created_at,
+                  updated_at: r5.data.updated_at,
+                }
+                setGame(newGame);
+              })
             })
           })
         })
@@ -139,7 +159,6 @@ export default function SessionPage() {
 
       <div className="space-y-8">
         <SessionTimeline events={sessionEvents} />
-        <ZKProofSection proofs={zkProofs} />
         <SessionActionsList 
           allActions={interactions}
           actions={currentInteractions}
@@ -147,6 +166,7 @@ export default function SessionPage() {
           totalPages={totalPages}
           onPageChange={paginate}
         />
+        <ZKProofSection proofs={zkProofs} />
       </div>
     </div>
   )

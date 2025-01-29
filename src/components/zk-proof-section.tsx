@@ -1,15 +1,12 @@
+import { ZkProof } from '@/app/session/[id]/page'
 import { Download, CheckCircle } from 'lucide-react'
 
-interface ZKProof {
-  id: string
-  gameState: object
+
+interface ZkProofSectionProps {
+  proofs: ZkProof[]
 }
 
-interface ZKProofSectionProps {
-  proofs: ZKProof[]
-}
-
-export default function ZKProofSection({ proofs }: ZKProofSectionProps) {
+export default function ZKProofSection({ proofs }: ZkProofSectionProps) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <div className="flex justify-between items-center mb-6">
@@ -27,14 +24,14 @@ export default function ZKProofSection({ proofs }: ZKProofSectionProps) {
       <div className="space-y-4">
         {proofs.map((proof) => (
           <div key={proof.id} className="border rounded-lg p-4">
-            <h3 className="font-medium mb-2">Proof {proof.id}</h3>
+            <h3 className="font-medium mb-2">Proof {"("}ID: {proof.id}{")"}</h3>
             <pre className="bg-gray-100 p-2 rounded text-sm overflow-x-auto mb-4">
-              {JSON.stringify(proof.gameState, null, 2)}
+              {JSON.stringify(JSON.parse(proof.proof), null, 1)}
             </pre>
             <div className="flex justify-end space-x-2">
               <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex items-center text-sm">
                 <CheckCircle className="w-4 h-4 mr-2" />
-                Verify
+                Verify proof {"("}ID: {proof.id}{")"}
               </button>
               <button className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center text-sm">
                 <Download className="w-4 h-4 mr-2" />

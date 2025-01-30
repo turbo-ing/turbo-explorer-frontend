@@ -1,14 +1,15 @@
-'use client'
+import { columns } from '@/components/GameSessionsTable/columns'
 
-import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
+// import { useState } from 'react'
+// import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
-import GameSessionsTable from '@/components/game-sessions-table'
-import { Game } from '@/components/turbo-explorer'
+import GameSessionsTable from '@/components/GameSessionsTable'
+import { Game, SessionEvent } from '@/components/turbo-explorer'
 import { Session } from '@/components/turbo-explorer'
 import api from '@/util/api'
 import useIframeMessageHandler from '@/hook/useIframeErrorHandler'
+import IsNotIframe from '@/app/components/IsNotIframe'
 
 export interface GameSession {
   id: string
@@ -17,77 +18,51 @@ export interface GameSession {
   interactionCount: number
 }
 
-//TODO: completely overhaul this awful logic.
-// I'll steal the stuff to grab session info though lol
+export const dynamic = 'force-dynamic'; // Enable dynamic data fetching
 
-const fetchGameBySlug = (slug: string) => api.get(`/apps/slug/${slug}`);
-const fetchSessionsByGameId = (gameId: string) => api.get(`/sessions/appId/${gameId}`);
+async function fetchGameBySlug(slug: string): Promise<Game> {
+  const { data } = await api.get(`/apps/slug/${slug}`);
+  return data;
+}
 
-export default function GamePage() {
-  const { sendMessageToParent } = useIframeMessageHandler()
-  const params = useParams();
-  const [game, setGame] = useState<Game | null>(null);
-  const [sessions, setSessions] = useState<Session[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const sessionsPerPage = 5;
-  const isIframe = typeof window !== 'undefined' && window.self !== window.top;
+async function fetchSessionsBySlug(slug: string): Promise<Session[]> {
+  const { data } = await api.get(`apps/slug/${slug}/sessions`);
+  return data;
+}
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const { data: gameData } = await fetchGameBySlug(params.id as string);
-        setGame(gameData);
+export default async function GamePage({ params }: { params: { id: string } }) {
+  let game: Game | null = null;
+  let sessions: Session[] = [];
+  let error: string | null = null;
 
-        const { data: sessionsData } = await fetchSessionsByGameId(gameData.id);
-        setSessions(sessionsData);
-        console.log(sessionsData);
-      } catch (err: unknown) {
-        if (isIframe) {
-          sendMessageToParent((err as Error).message || 'An error occurred');
-        } else {
-          setError((err as Error).message || 'An error occurred');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
+  // id = game slug
+  const {id} = await params
 
-    fetchData();
-  }, [params.id,isIframe, sendMessageToParent]);
+  try {
+    sessions = await fetchSessionsBySlug(id)
+    game = await fetchGameBySlug(id)
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    error = 'Failed to fetch game or session data.';
+  }
 
-
-  const indexOfLastSession = currentPage * sessionsPerPage;
-  const indexOfFirstSession = indexOfLastSession - sessionsPerPage;
-  const currentSessions = sessions.slice(indexOfFirstSession, indexOfLastSession);
-  const totalPages = Math.ceil(sessions.length / sessionsPerPage);
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
-  if (loading) return <div className="p-8">Loading</div>;
   if (error) return <div className="p-8 text-red-500">Error: {error}</div>;
   if (!game) return <div className="p-8">Game not found.</div>;
 
   return (
-    <div className="min-h-screen text-gray-600 bg-gray-100 p-8">
-      <Link href="/" className="inline-flex items-center text-blue-600 hover:underline mb-4">
-        <ArrowLeft className="w-4 h-4 mr-2" />
-        Back to Games List
-      </Link>
+    <div className="lg:container mx-auto min-h-screen text-gray-600 bg-gray-100 p-8 ">
+      <IsNotIframe>
+        <Link href="/" className="inline-flex items-center text-blue-600 hover:underline mb-4">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Games List
+        </Link>
+      </IsNotIframe>
+
       <h1 className="text-3xl font-bold mb-6">{game.name}</h1>
-      <pre className="text-2 xl font-semibold font-medium mb-3">
+      <pre className="font-medium mb-3">
           {game.description}
       </pre>
-            
-      <GameSessionsTable 
-        allSessions={sessions}
-        sessions={currentSessions} 
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={paginate}
-      />
+      <GameSessionsTable columns={columns} data={sessions}/>
     </div>
   );
 }

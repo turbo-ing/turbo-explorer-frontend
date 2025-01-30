@@ -60,7 +60,7 @@ export default function SessionPage() {
           app_id: r.data.app_id,
           session_id: r.data.session_id,
           topic: r.data.topic,
-          interactions: r.data.interaction_count,
+          interaction_count: r.data.interaction_count,
           created_at: r.data.created_at,
           updated_at: r.data.updated_at,
         }

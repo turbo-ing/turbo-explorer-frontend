@@ -9,23 +9,42 @@ interface GameSessionsTableProps {
   onPageChange: (page: number) => void
 }
 
+function formatShortDate(date: Date): string {
+  // Ensure date is a valid Date object
+  const validDate = typeof date === 'string' ? new Date(date) : date;
+
+  if (!(validDate instanceof Date) || isNaN(validDate.getTime())) {
+    throw new Error("Invalid date provided");
+  }
+
+  const userLocale = navigator.language || 'en-US'; 
+  const month = validDate.toLocaleString(userLocale, { month: 'short' });
+  const day = validDate.getDate().toString().padStart(2, '0');
+  const year = validDate.getFullYear();
+  const hours = validDate.getHours().toString().padStart(2, '0');
+  const minutes = validDate.getMinutes().toString().padStart(2, '0');
+
+  return `${day} ${month} ${year}, ${hours}:${minutes}`;
+}
+
 export default function GameSessionsTable({ sessions, currentPage, totalPages, onPageChange }: GameSessionsTableProps) {
+
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden">
       <table className="min-w-full divide-y divide-gray-200">
         <thead className="bg-gray-50">
           <tr>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Session ID
+              ID
             </th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Topic ID
             </th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Date Time
+              Timestamp
             </th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Interaction Count
+              Interactions
             </th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Actions
@@ -37,10 +56,10 @@ export default function GameSessionsTable({ sessions, currentPage, totalPages, o
             <tr key={session.id}>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{session.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.topic}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(session.created_at).toLocaleString()}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.interactions}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{formatShortDate(session.created_at)}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.interaction_count}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <Link href={`/session/${session.id}`} className="text-indigo-600 hover:text-indigo-900">
+                <Link href={`/session/${session.id}`} className="text-indigo-600 hover:text-indigo-900 flex justify-center">
                   <Eye className="w-5 h-5" />
                 </Link>
               </td>

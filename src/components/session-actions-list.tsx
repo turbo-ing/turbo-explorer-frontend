@@ -37,7 +37,7 @@ export default function SessionActionsList({ allActions, actions, currentPage, t
           <div key={action.id} className="border rounded-lg p-4">
             <div className="flex justify-between items-start mb-2">
               <span className="font-medium">{JSON.parse(action.body).data.type}</span>
-              <span className="text-sm text-gray-500">{new Date(action.created_at).toLocaleString()}</span>
+              <span className="text-sm text-gray-500">{new Date(Number(action.recent_blob_pull)).toLocaleString()}</span>
             </div>
             <pre className="bg-gray-100 p-2 rounded text-sm overflow-x-auto mb-2">
               {JSON.stringify(JSON.parse(action.body).data.payload, null, 2)}

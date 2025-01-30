@@ -10,21 +10,24 @@ export default function ZKProofSection({ proofs }: ZkProofSectionProps) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">ZK Proof</h2>
+        <h2 className="text-xl font-semibold">ZK Proofs</h2>
         <div className="flex space-x-2">
-          <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
+          {/*<button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
             Verify
           </button>
           <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center">
             <Download className="w-4 h-4 mr-2" />
             Download Verification Key
-          </button>
+          </button>*/}
         </div>
       </div>
       <div className="space-y-4">
         {proofs.map((proof) => (
           <div key={proof.id} className="border rounded-lg p-4">
-            <h3 className="font-medium mb-2">Proof {"("}ID: {proof.id}{")"}</h3>
+            <div className="flex justify-between items-start mb-2">
+              <span className="font-medium">Proof {"("}ID: {proof.id}{")"}</span>
+              <span className="text-sm text-gray-500">{new Date(Number(proof.recent_blob_pull)).toLocaleString()}</span>
+            </div>
             <pre className="bg-gray-100 p-2 rounded text-sm overflow-x-auto mb-4">
               {JSON.stringify(JSON.parse(proof.proof), null, 1)}
             </pre>

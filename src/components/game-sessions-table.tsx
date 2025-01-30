@@ -23,7 +23,7 @@ export default function GameSessionsTable({ allSessions, sessions, currentPage, 
               Topic ID
             </th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Date Time
+              Last topicspace update
             </th>
             <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Interaction Count
@@ -38,7 +38,7 @@ export default function GameSessionsTable({ allSessions, sessions, currentPage, 
             <tr key={session.id}>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{session.id}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.topic}</td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(session.created_at).toLocaleString()}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(Number(session.recent_blob_pull)).toLocaleString()}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{session.interaction_count}</td>
               <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                 <Link href={`/session/${session.id}`} className="text-indigo-600 hover:text-indigo-900">

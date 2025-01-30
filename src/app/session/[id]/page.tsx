@@ -33,6 +33,7 @@ export interface ZkProof {
   peer_id: string,
   proof: string,
   verification_key: string,
+  recent_blob_pull: bigint,
 }
 
 export default function SessionPage() {
@@ -65,6 +66,7 @@ export default function SessionPage() {
           interaction_count: r.data.interaction_count,
           created_at: r.data.created_at,
           updated_at: r.data.updated_at,
+          recent_blob_pull: r.data.recent_blob_pull,
         }
         setSession(newSession);
         //pull sessionEvents from our session ID
@@ -77,6 +79,7 @@ export default function SessionPage() {
               peer_id: r2.data[i].peer_id,
               event: r2.data[i].event,
               created_at: r2.data[i].created_at,
+              recent_blob_pull: r2.data[i].recent_blob_pull,
             }
             newSessionEvents.push(newSessionEvent);
           }
@@ -92,6 +95,7 @@ export default function SessionPage() {
                 peer_id: r3.data[j].peer_id,
                 body: r3.data[j].body,
                 created_at: r3.data[j].created_at,
+                recent_blob_pull: r3.data[j].recent_blob_pull,
               }
               newInteractions.push(newInteraction);
             }
@@ -101,12 +105,13 @@ export default function SessionPage() {
             api.get('/zkProofs/sessionId/' + r.data.id).then((r4) => {
               console.log(r4);
               const newZks: ZkProof[] = [];
-              for (let j = 0; j < r4.data.length; j++) {
+              for (let k = 0; k < r4.data.length; k++) {
                 const newZk: ZkProof = {
-                  id: r4.data[j].id,
-                  peer_id: r4.data[j].peer_id,
-                  proof: r4.data[j].proof,
-                  verification_key: r4.data[j].verification_key,
+                  id: r4.data[k].id,
+                  peer_id: r4.data[k].peer_id,
+                  proof: r4.data[k].proof,
+                  verification_key: r4.data[k].verification_key,
+                  recent_blob_pull: r4.data[k].recent_blob_pull,
                 }
                 newZks.push(newZk);
               }
@@ -128,6 +133,7 @@ export default function SessionPage() {
                   slug: r5.data.slug,
                   created_at: r5.data.created_at,
                   updated_at: r5.data.updated_at,
+                  recent_blob_pull: r5.data.recent_blob_pull,
                 }
                 setGame(newGame);
               })

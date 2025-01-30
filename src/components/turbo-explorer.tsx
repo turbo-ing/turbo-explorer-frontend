@@ -22,6 +22,7 @@ export interface Game {
   slug: string,
   created_at: Date,
   updated_at: Date,
+  recent_blob_pull: bigint,
 }
 
 export interface Session {
@@ -32,6 +33,7 @@ export interface Session {
   interaction_count: number,
   created_at: Date,
   updated_at: Date,
+  recent_blob_pull: bigint, 
 }
 
 export interface SessionEvent {
@@ -40,6 +42,7 @@ export interface SessionEvent {
   peer_id: string,
   event: string,
   created_at: Date,
+  recent_blob_pull: bigint, 
 }
 
 export interface Interaction {
@@ -48,6 +51,7 @@ export interface Interaction {
   peer_id: string,
   body: string,
   created_at: Date,
+  recent_blob_pull: bigint,
 }
 
 export default function TurboExplorer() {
@@ -73,6 +77,7 @@ export default function TurboExplorer() {
             slug: r.data[i].slug,
             created_at: r.data[i].created_at,
             updated_at: r.data[i].updated_at,
+            recent_blob_pull: r.data[i].recent_blob_pull,
           }
           newGames.push(newGame);
         }

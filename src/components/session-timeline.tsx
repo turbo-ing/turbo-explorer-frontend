@@ -27,7 +27,7 @@ export default function SessionTimeline({ events }: SessionTimelineProps) {
                 {event.peer_id} {event.event === 'JOIN' ? 'joined' : 'left'} the session
               </p>
               <p className="text-sm text-gray-500">
-                {new Date(event.created_at).toLocaleString()}
+                {new Date(Number(event.recent_blob_pull)).toLocaleString()}
               </p>
             </div>
           </div>

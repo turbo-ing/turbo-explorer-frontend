@@ -77,6 +77,10 @@ export default function GamePage() {
         Back to Games List
       </Link>
       <h1 className="text-3xl font-bold mb-6">{game.name}</h1>
+      <pre className="text-2 xl font-semibold font-medium mb-3">
+          {game.description}
+      </pre>
+            
       <GameSessionsTable 
         allSessions={sessions}
         sessions={currentSessions} 

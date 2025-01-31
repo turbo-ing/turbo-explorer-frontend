@@ -1,10 +1,13 @@
 "use client"
 
+import * as React from "react"
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
   useReactTable,
 } from "@tanstack/react-table"
 
@@ -17,9 +20,16 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
-import { Button } from "../ui/button"
+import { 
+  ChevronLeft, 
+  ChevronRight, 
+  ChevronsLeft, 
+  ChevronsRight,
+  ArrowUp,
+  ArrowDown,
+} from "lucide-react"
 
+import { Button } from "../ui/button"
 
 interface GameSessionTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -30,44 +40,73 @@ export default function GameSessionsTable<TData, TValue>({
   columns,
   data,
 }: GameSessionTableProps<TData, TValue>) {
+  // State to manage sorting
+  const [sorting, setSorting] = React.useState<SortingState>([])
+
   const table = useReactTable({
     data,
     columns,
-    initialState: {
+    state: {
+      // Provide both sorting + pagination in state
+      sorting,
       pagination: {
+        pageIndex: 0,
         pageSize: 10,
       },
     },
+    // Called whenever sorting changes
+    onSortingChange: setSorting,
+    // Must enable this to use sorting
+    getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   })
 
   return (
     <div className="rounded-md border bg-white h-full">
-      <Table className=" overflow-x-visible">
+      <Table className="overflow-x-auto">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
+                // Sorting helpers:
+                const canSort = header.column.getCanSort()
+                const isSorted = header.column.getIsSorted()
+                const sortHandler = header.column.getToggleSortingHandler()
+
                 return (
                   <TableHead
                     key={header.id}
-                    className="px-3 md:px-5 py-3"
+                    className={`px-3 md:px-5 py-3 ${
+                      canSort ? "cursor-pointer select-none" : ""
+                    }`}
+                    onClick={canSort ? sortHandler : undefined}
                   >
                     {header.isPlaceholder
                       ? null
-                      : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
+                      : (
+                          <div className="flex items-center space-x-1">
+                            {/* The actual header label */}
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+
+                            {/* Sort indicator */}
+                            {isSorted === "asc" && <ArrowUp className="w-4 h-4" />}
+                            {isSorted === "desc" && <ArrowDown className="w-4 h-4" />}
+                          </div>
+                        )
+                    }
                   </TableHead>
                 )
               })}
             </TableRow>
           ))}
         </TableHeader>
+
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -76,33 +115,38 @@ export default function GameSessionsTable<TData, TValue>({
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
-                    className="px-3 md:px-5 py-3">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    className="px-3 md:px-5 py-3"
+                  >
+                    {flexRender(
+                      cell.column.columnDef.cell,
+                      cell.getContext()
+                    )}
                   </TableCell>
                 ))}
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className=" text-center py-4">
+              <TableCell colSpan={columns.length} className="text-center py-4">
                 No results.
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
+
       {/* Page Controls */}
       <div className="flex flex-row border-t justify-between px-2">
         {/* Pagination Controls */}
         <div className="flex items-center justify-center space-x-2 p-2">
           <Button
             variant="outline"
-            className=" h-8 w-8 p-0 lg:flex"
+            className="h-8 w-8 p-0"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
             <span className="sr-only">Go to first page</span>
-            <ChevronsLeft />
+            <ChevronsLeft className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
@@ -111,12 +155,14 @@ export default function GameSessionsTable<TData, TValue>({
             disabled={!table.getCanPreviousPage()}
           >
             <span className="sr-only">Go to previous page</span>
-            <ChevronLeft />
+            <ChevronLeft className="h-4 w-4" />
           </Button>
+
           <div className="flex w-[100px] items-center justify-center text-sm font-medium">
             Page {table.getState().pagination.pageIndex + 1} of{" "}
             {table.getPageCount()}
           </div>
+
           <Button
             variant="outline"
             className="h-8 w-8 p-0"
@@ -124,16 +170,16 @@ export default function GameSessionsTable<TData, TValue>({
             disabled={!table.getCanNextPage()}
           >
             <span className="sr-only">Go to next page</span>
-            <ChevronRight />
+            <ChevronRight className="h-4 w-4" />
           </Button>
           <Button
             variant="outline"
-            className=" h-8 w-8 p-0 lg:flex"
+            className="h-8 w-8 p-0"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >
             <span className="sr-only">Go to last page</span>
-            <ChevronsRight />
+            <ChevronsRight className="h-4 w-4" />
           </Button>
         </div>
 

@@ -69,6 +69,7 @@ export const columns: ColumnDef<Session>[] = [
   {
     accessorKey: "actions",
     header: "Actions",
+    enableSorting: false,
     cell: ({ row }) => (
       <Link 
         href={`/session/${row.original.id}`} 

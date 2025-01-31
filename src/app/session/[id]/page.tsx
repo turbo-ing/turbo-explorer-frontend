@@ -12,6 +12,7 @@ import {
   Game
 } from '@/components/turbo-explorer'
 import api from '@/util/api'
+import BackButton from '@/components/BackButton'
 
 /*interface SessionEvent {
   id: string
@@ -128,8 +129,8 @@ export default function SessionPage() {
                   domain_name: r5.data.domain_name,
                   game_id: r5.data.game_id,
                   verification_key: r5.data.verification_key,
-                  sessions: r5.data.session_count,
-                  interactions: r5.data.interaction_count,
+                  session_count: r5.data.session_count,
+                  interaction_count: r5.data.interaction_count,
                   slug: r5.data.slug,
                   created_at: r5.data.created_at,
                   updated_at: r5.data.updated_at,
@@ -156,16 +157,17 @@ export default function SessionPage() {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
   return (
-    <div className="min-h-screen text-gray-600 bg-gray-100 p-8">
-      <Link href={(game !== undefined) ? ("/game/" + game.slug) : "/"} className="inline-flex items-center text-blue-600 hover:underline mb-4">
-        <ArrowLeft className="w-4 h-4 mr-2" />
+    <div className="min-h-screen text-stone-600 bg-stone-100 p-8">
+      
+      <BackButton href={(game !== undefined) ? ("/game/" + game.slug) : "/"}>
         Back to Game
-      </Link>
+      </BackButton>
+
       <h1 className="text-3xl font-bold mb-6">Session Details: {session.id}</h1>
 
       <div className="space-y-8">
         <SessionTimeline events={sessionEvents} />
-        <SessionActionsList 
+        <SessionActionsList
           allActions={interactions}
           actions={currentInteractions}
           currentPage={currentPage}

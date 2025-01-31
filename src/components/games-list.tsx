@@ -22,7 +22,7 @@ export default function GamesList({ games }: GamesListProps) {
               <h3 className="text-xl font-semibold">{game.name}</h3>
               <p className='text-muted'>{game.id}</p>
             </div>
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-stone-600">
               <p>Sessions: {game.session_count}</p>
               <p>Interactions: {game.interaction_count}</p>
             </div>

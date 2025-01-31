@@ -26,9 +26,9 @@ export default function ZKProofSection({ proofs }: ZkProofSectionProps) {
           <div key={proof.id} className="border rounded-lg p-4">
             <div className="flex justify-between items-start mb-2">
               <span className="font-medium">Proof {"("}ID: {proof.id}{")"}</span>
-              <span className="text-sm text-gray-500">{new Date(Number(proof.recent_blob_pull)).toLocaleString()}</span>
+              <span className="text-sm text-stone-500">{new Date(Number(proof.recent_blob_pull)).toLocaleString()}</span>
             </div>
-            <pre className="bg-gray-100 p-2 rounded text-sm overflow-x-auto mb-4">
+            <pre className="bg-stone-100 p-2 rounded text-sm overflow-x-auto mb-4">
               {JSON.stringify(JSON.parse(proof.proof), null, 1)}
             </pre>
             <div className="flex justify-end space-x-2">

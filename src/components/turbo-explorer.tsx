@@ -67,7 +67,7 @@ export default async function TurboExplorer() {
   const totalInteractions = games.reduce((sum, game) => sum + game.interaction_count, 0)
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-stone-100">
       <Container className='flex flex-col h-72 justify-center gap-6 ' color='bg-turbo-red gradient'>
         <div className='space-y-1 text-white'>
         <h1 className='text-5xl sm:text-6xl  font-medium'>

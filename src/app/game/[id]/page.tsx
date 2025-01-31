@@ -10,6 +10,7 @@ import { Session } from '@/components/turbo-explorer'
 import api from '@/util/api'
 import useIframeMessageHandler from '@/hook/useIframeErrorHandler'
 import IsNotIframe from '@/components/IsNotIframe'
+import BackButton from '@/components/BackButton'
 
 export interface GameSession {
   id: string
@@ -36,7 +37,7 @@ export default async function GamePage({ params }: { params: { id: string } }) {
   let error: string | null = null;
 
   // id = game slug
-  const {id} = await params
+  const { id } = await params
 
   try {
     sessions = await fetchSessionsBySlug(id)
@@ -50,19 +51,18 @@ export default async function GamePage({ params }: { params: { id: string } }) {
   if (!game) return <div className="p-8">Game not found.</div>;
 
   return (
-    <div className="lg:container mx-auto min-h-screen text-gray-600 bg-gray-100 p-8 ">
+    <div className="lg:container mx-auto min-h-screen text-stone-600 bg-stone-100 p-8 ">
       <IsNotIframe>
-        <Link href="/" className="inline-flex items-center text-blue-600 hover:underline mb-4">
-          <ArrowLeft className="w-4 h-4 mr-2" />
+        <BackButton href={"/"}>
           Back to Games List
-        </Link>
+        </BackButton>
       </IsNotIframe>
 
       <h1 className="text-3xl font-bold mb-6">{game.name}</h1>
       <pre className="font-medium mb-3">
-          {game.description}
+        {game.description}
       </pre>
-      <GameSessionsTable columns={columns} data={sessions}/>
+      <GameSessionsTable columns={columns} data={sessions} />
     </div>
   );
 }

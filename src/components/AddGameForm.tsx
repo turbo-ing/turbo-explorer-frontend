@@ -42,7 +42,7 @@ export default function AddGameForm() {
   };
 
   return (
-      <form onSubmit={handleSubmit(onSubmit)} className="bg-white shadow-none sm:shadow-md rounded-lg p-5 sm:p-6 w-full sm:w-[30rem]
+      <form onSubmit={handleSubmit(onSubmit)} className="sm:bg-white shadow-none sm:shadow-md rounded-lg p-5 sm:p-6 w-full sm:w-[30rem]
 ">
         <h1 className="text-3xl text-stone-700 font-bold mb-5 mt-1">Add New Game</h1>
         <div className="space-y-4">
@@ -52,7 +52,7 @@ export default function AddGameForm() {
               {...register('name', { required: 'Game name is required' })}
               type="text"
               id="name"
-              className="mt-1 block w-full text-stone-600 rounded-md border-stone-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full text-stone-600 rounded-md border-stone-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white"
             />
             {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
           </div>
@@ -62,7 +62,7 @@ export default function AddGameForm() {
               {...register('description', { required: 'Description is required' })}
               type="text"
               id="description"
-              className="mt-1 block w-full text-stone-600 rounded-md border-stone-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full text-stone-600 rounded-md border-stone-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white"
             />
             {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>}
           </div>
@@ -72,7 +72,7 @@ export default function AddGameForm() {
               {...register('domain_name', { required: 'Domain name is required' })}
               type="text"
               id="domain_name"
-              className="mt-1 block w-full text-stone-600 rounded-md border-stone-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full text-stone-600 rounded-md border-stone-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white"
             />
             {errors.domain_name && <p className="mt-1 text-sm text-red-600">{errors.domain_name.message}</p>}
           </div>
@@ -82,7 +82,7 @@ export default function AddGameForm() {
               {...register('game_id', { required: 'Game ID / Slug is required' })}
               type="text"
               id="game_id"
-              className="mt-1 block w-full text-stone-600 rounded-md border-stone-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full text-stone-600 rounded-md border-stone-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white"
             />
             {errors.game_id && <p className="mt-1 text-sm text-red-600">{errors.game_id.message}</p>}
             {errors.slug && <p className="mt-1 text-sm text-red-600">{errors.slug.message}</p>}
@@ -93,7 +93,7 @@ export default function AddGameForm() {
               {...register('verification_key', { required: 'Verification key is required' })}
               type="text"
               id="game_id"
-              className="mt-1 block w-full text-stone-600 rounded-md border-stone-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+              className="mt-1 block w-full text-stone-600 rounded-md border-stone-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 bg-white"
             />
             {errors.verification_key && <p className="mt-1 text-sm text-red-600">{errors.verification_key.message}</p>}
           </div>

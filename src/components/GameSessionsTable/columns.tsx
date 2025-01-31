@@ -5,59 +5,77 @@ import { Session } from '../turbo-explorer'
 import Link from "next/link";
 import { Eye } from "lucide-react";
 
-function formatShortDate(date: Date): string {
-    // Ensure date is a valid Date object
-    const validDate = typeof date === 'string' ? new Date(date) : date;
+// Helper function to display "X time "
+function formatTimeAgo(date: Date | string): string {
+  // Convert incoming date (possibly string) to a Date object
+  const validDate = typeof date === 'string' ? new Date(date) : date
 
-    if (!(validDate instanceof Date) || isNaN(validDate.getTime())) {
-        throw new Error("Invalid date provided");
-    }
+  if (!(validDate instanceof Date) || isNaN(validDate.getTime())) {
+    throw new Error("Invalid date provided")
+  }
 
-    const userLocale = navigator.language || 'en-US';
-    const month = (validDate.getMonth() + 1).toString();
-    const day = validDate.getDate().toString()
-    const year = (validDate.getFullYear() % 100).toString().padStart(2, '0'); // Last two digits of the year
-    const hours = validDate.getHours().toString().padStart(2, '0');
-    const minutes = validDate.getMinutes().toString().padStart(2, '0');
+  const now = new Date()
+  const seconds = Math.floor((now.getTime() - validDate.getTime()) / 1000)
 
-    return `${day}/${month}/${year}, ${hours}:${minutes}`;
+  if (seconds < 60) {
+    return "just now"
+  }
+  const minutes = Math.floor(seconds / 60)
+  if (minutes < 60) {
+    return `${minutes} minute${minutes > 1 ? "s" : ""}`
+  }
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) {
+    return `${hours} hour${hours > 1 ? "s" : ""}`
+  }
+  const days = Math.floor(hours / 24)
+  if (days < 7) {
+    return `${days} day${days > 1 ? "s" : ""}`
+  }
+  const weeks = Math.floor(days / 7)
+  if (weeks < 5) {
+    return `${weeks} week${weeks > 1 ? "s" : ""}`
+  }
+  const months = Math.floor(days / 30)
+  if (months < 12) {
+    return `${months} month${months > 1 ? "s" : ""}`
+  }
+  const years = Math.floor(months / 12)
+  return `${years} year${years > 1 ? "s" : ""}`
 }
 
 export const columns: ColumnDef<Session>[] = [
-    {
-        accessorKey: "id",
-        header: "ID",
-        cell: ({ row }) => (
-            <div className="text-center">
-                {row.original.interaction_count}
-            </div>
-        ),
-    },
-    {
-        accessorKey: "topic",
-        header: "Topic ID",
-    },
-    {
-        accessorKey: "created_at",
-        header: "Timestamp",
-        cell: ({ row }) => formatShortDate(row.original.created_at),
-    },
-    {
-        accessorKey: "interaction_count",
-        header: "Interactions",
-        cell: ({ row }) => (
-            <div className="text-center">
-                {row.original.interaction_count}
-            </div>
-        ),
-    },
-    {
-        accessorKey: "actions",
-        header: "Actions",
-        cell: ({ row }) => (
-            <Link href={`/session/${row.original.id}`} className="text-indigo-600 hover:text-indigo-900 flex justify-center">
-                <Eye className="w-5 h-5" />
-            </Link>
-        ),
-    },
+  {
+    accessorKey: "id",
+    header: "ID",
+
+  },
+  {
+    accessorKey: "topic",
+    header: "Topic ID",
+    // should remove domain part from topic id i think would shorten and
+    // remove repetition
+    cell: ({ row }) => row.original.topic.split("#")[2],
+  },
+  {
+    accessorKey: "created_at",
+    header: "Age",
+    cell: ({ row }) => formatTimeAgo(row.original.created_at),
+  },
+  {
+    accessorKey: "interaction_count",
+    header: "Interactions",
+  },
+  {
+    accessorKey: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <Link 
+        href={`/session/${row.original.id}`} 
+        className="text-indigo-600 hover:text-indigo-900 flex justify-center"
+      >
+        <Eye className="w-5 h-5" />
+      </Link>
+    ),
+  },
 ]

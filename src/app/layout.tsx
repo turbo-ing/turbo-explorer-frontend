@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="bg-gray-100">
+    <html lang="en" className="bg-gray-100 max-w-[100vw] overflow-x-hidden">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 grid grid-rows-[78px_1fr] h-full min-h-[100dvh] max-w-[100vw]`}>
         <NavBar />

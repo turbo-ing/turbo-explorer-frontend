@@ -11,7 +11,7 @@ interface interactionsListProps {
 }
 
 export default function SessionActionsList({ allActions, actions, currentPage, totalPages, onPageChange }: interactionsListProps) {
-  //console.log(celestia.namespace((JSON.parse(actions[0].body).ns)).toString('hex'));
+
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <p>INTERACTION COUNT: {allActions.length}</p>

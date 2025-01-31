@@ -2,154 +2,137 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
-import Link from 'next/link'
-import { ArrowLeft } from 'lucide-react'
 import SessionTimeline from '@/components/session-timeline'
 import SessionActionsList from '@/components/session-actions-list'
 import ZKProofSection from '@/components/zk-proof-section'
 import {
-  Session, SessionEvent, Interaction,/*zkProof*/
-  Game
+  Session,
+  SessionEvent,
+  Interaction,
+  Game,
 } from '@/components/turbo-explorer'
 import api from '@/util/api'
 import BackButton from '@/components/BackButton'
 import Container from '@/components/Container'
 
-/*interface SessionEvent {
-  id: string
-  type: 'join' | 'leave'
-  user: string
-  timestamp: string
-}*/
-
-/*interface SessionAction {
-  id: string
-  type: string
-  data: any
-  timestamp: string
-  user: string
-}*/
-
 export interface ZkProof {
-  id: string,
-  peer_id: string,
-  proof: string,
-  verification_key: string,
-  recent_blob_pull: bigint,
+  id: string
+  peer_id: string
+  proof: string
+  verification_key: string
+  recent_blob_pull: bigint
 }
 
 export default function SessionPage() {
-  const params = useParams();
-  const [loaded, setLoaded] = useState<boolean>(false);
-  const [game, setGame] = useState<Game | undefined>(undefined);
-  const [session, setSession] = useState<Session | undefined>(undefined);
-  const [sessionEvents, setSessionEvents] = useState<SessionEvent[]>([]);
-  const [interactions, setInteractions] = useState<Interaction[]>([]);
-  const [zkProofs, setZkProofs] = useState<ZkProof[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const actionsPerPage = 5;
+  const params = useParams()
+  const [session, setSession] = useState<Session | undefined>()
+  const [sessionEvents, setSessionEvents] = useState<SessionEvent[]>([])
+  const [interactions, setInteractions] = useState<Interaction[]>([])
+  const [zkProofs, setZkProofs] = useState<ZkProof[]>([])
+  const [game, setGame] = useState<Game | undefined>()
+  const [loading, setLoading] = useState(true)
+
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1)
+  const actionsPerPage = 5
 
   useEffect(() => {
-    setZkProofs([])
-    console.log(params.id);
-    if (!loaded) {
-      setLoaded(true);
-      console.log("Grabbing session with ID " + params.id + " from API backend...")
-      //grab the session at correct url (session by id)
+    // If `params.id` doesn’t exist yet, don’t proceed
+    if (!params.id) return
 
-      //TODO  write backend gfunction to let me do this call
-      api.get('/sessions/id/' + params.id).then((r) => {
-        console.log(r.data);
-        const newSession: Session = {
-          id: r.data.id,
-          app_id: r.data.app_id,
-          session_id: r.data.session_id,
-          topic: r.data.topic,
-          interaction_count: r.data.interaction_count,
-          created_at: r.data.created_at,
-          updated_at: r.data.updated_at,
-          recent_blob_pull: r.data.recent_blob_pull,
+    // Convert params.id to a string in case it’s an array
+    const sessionId = Array.isArray(params.id) ? params.id[0] : params.id
+
+    // Fetch data function
+    async function fetchData(id: string) {
+      try {
+        // 1. Get the session by ID
+        const sessionRes = await api.get(`/sessions/id/${id}`)
+        const sessionData: Session = {
+          id: sessionRes.data.id,
+          app_id: sessionRes.data.app_id,
+          session_id: sessionRes.data.session_id,
+          topic: sessionRes.data.topic,
+          interaction_count: sessionRes.data.interaction_count,
+          created_at: sessionRes.data.created_at,
+          updated_at: sessionRes.data.updated_at,
+          recent_blob_pull: sessionRes.data.recent_blob_pull,
         }
-        setSession(newSession);
-        //pull sessionEvents from our session ID
-        api.get('/session-events/sessionId/' + r.data.id).then((r2) => {
-          const newSessionEvents: SessionEvent[] = [];
-          for (let i = 0; i < r2.data.length; i++) {
-            const newSessionEvent: SessionEvent = {
-              id: r2.data[i].id,
-              session_id: r2.data[i].session_id,
-              peer_id: r2.data[i].peer_id,
-              event: r2.data[i].event,
-              created_at: r2.data[i].created_at,
-              recent_blob_pull: r2.data[i].recent_blob_pull,
-            }
-            newSessionEvents.push(newSessionEvent);
-          }
-          setSessionEvents(newSessionEvents);
+        setSession(sessionData)
 
-          //pull interactions from our session ID
-          api.get('/interactions/sessionId/' + r.data.id).then((r3) => {
-            const newInteractions: Interaction[] = [];
-            for (let j = 0; j < r3.data.length; j++) {
-              const newInteraction: Interaction = {
-                id: r3.data[j].id,
-                session_id: r3.data[j].session_id,
-                peer_id: r3.data[j].peer_id,
-                body: r3.data[j].body,
-                created_at: r3.data[j].created_at,
-                recent_blob_pull: r3.data[j].recent_blob_pull,
-              }
-              newInteractions.push(newInteraction);
-            }
-            setInteractions(newInteractions);
+        // 2. Fetch session-related data in parallel
+        const [eventsRes, interactionsRes, proofsRes, gameRes] = await Promise.all([
+          api.get(`/session-events/sessionId/${sessionData.id}`),
+          api.get(`/interactions/sessionId/${sessionData.id}`),
+          api.get(`/zkProofs/sessionId/${sessionData.id}`),
+          api.get(`/apps/${sessionData.app_id}`),
+        ])
 
-            //pull zkProofs from our session ID
-            api.get('/zkProofs/sessionId/' + r.data.id).then((r4) => {
-              console.log(r4);
-              const newZks: ZkProof[] = [];
-              for (let k = 0; k < r4.data.length; k++) {
-                const newZk: ZkProof = {
-                  id: r4.data[k].id,
-                  peer_id: r4.data[k].peer_id,
-                  proof: r4.data[k].proof,
-                  verification_key: r4.data[k].verification_key,
-                  recent_blob_pull: r4.data[k].recent_blob_pull,
-                }
-                newZks.push(newZk);
-              }
-              setZkProofs(newZks);
-              console.log(zkProofs);
+        // 3. Transform & store session events
+        const fetchedEvents: SessionEvent[] = eventsRes.data.map((item: any) => ({
+          id: item.id,
+          session_id: item.session_id,
+          peer_id: item.peer_id,
+          event: item.event,
+          created_at: item.created_at,
+          recent_blob_pull: item.recent_blob_pull,
+        }))
+        setSessionEvents(fetchedEvents)
 
-              //Lastly, just grab the app again so we have the slug for "back".
-              api.get('/apps/' + r.data.app_id).then((r5) => {
-                console.log(r5.data);
-                const newGame: Game = {
-                  id: r5.data.id,
-                  name: r5.data.name,
-                  description: r5.data.description,
-                  domain_name: r5.data.domain_name,
-                  game_id: r5.data.game_id,
-                  verification_key: r5.data.verification_key,
-                  session_count: r5.data.session_count,
-                  interaction_count: r5.data.interaction_count,
-                  slug: r5.data.slug,
-                  created_at: r5.data.created_at,
-                  updated_at: r5.data.updated_at,
-                  recent_blob_pull: r5.data.recent_blob_pull,
-                }
-                setGame(newGame);
-              })
-            })
-          })
-        })
-      })
+        // 4. Transform & store interactions
+        const fetchedInteractions: Interaction[] = interactionsRes.data.map((item: any) => ({
+          id: item.id,
+          session_id: item.session_id,
+          peer_id: item.peer_id,
+          body: item.body,
+          created_at: item.created_at,
+          recent_blob_pull: item.recent_blob_pull,
+        }))
+        setInteractions(fetchedInteractions)
+
+        // 5. Transform & store ZK proofs
+        const fetchedProofs: ZkProof[] = proofsRes.data.map((item: any) => ({
+          id: item.id,
+          peer_id: item.peer_id,
+          proof: item.proof,
+          verification_key: item.verification_key,
+          recent_blob_pull: item.recent_blob_pull,
+        }))
+        setZkProofs(fetchedProofs)
+
+        // 6. Transform & store game data
+        const fetchedGame: Game = {
+          id: gameRes.data.id,
+          name: gameRes.data.name,
+          description: gameRes.data.description,
+          domain_name: gameRes.data.domain_name,
+          game_id: gameRes.data.game_id,
+          verification_key: gameRes.data.verification_key,
+          session_count: gameRes.data.session_count,
+          interaction_count: gameRes.data.interaction_count,
+          slug: gameRes.data.slug,
+          created_at: gameRes.data.created_at,
+          updated_at: gameRes.data.updated_at,
+          recent_blob_pull: gameRes.data.recent_blob_pull,
+        }
+        setGame(fetchedGame)
+      } catch (error) {
+        console.error('Error fetching session data:', error)
+      } finally {
+        setLoading(false)
+      }
     }
-  }, [params.id, loaded])
 
-  if (!session) {
+    // Call our async function
+    fetchData(sessionId)
+  }, [params.id])
+
+  // If still loading or no session found yet
+  if (loading || !session) {
     return <div className="p-8">Loading...</div>
   }
 
+  // Pagination logic
   const indexOfLastAction = currentPage * actionsPerPage
   const indexOfFirstAction = indexOfLastAction - actionsPerPage
   const currentInteractions = interactions.slice(indexOfFirstAction, indexOfLastAction)
@@ -158,9 +141,8 @@ export default function SessionPage() {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
   return (
-    <Container className="text-stone-600 bg-stone-100 p-8">
-      
-      <BackButton href={(game !== undefined) ? ("/game/" + game.slug) : "/"}>
+    <Container className="text-stone-600 bg-stone-100 p-8 max-w-[100vw]">
+      <BackButton href={game ? `/game/${game.slug}` : '/'}>
         Back to Game
       </BackButton>
 
@@ -180,4 +162,3 @@ export default function SessionPage() {
     </Container>
   )
 }
-

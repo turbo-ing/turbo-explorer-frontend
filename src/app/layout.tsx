@@ -32,11 +32,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-gray-100">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 h-full min-h-[100dvh]`}
-      >
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gray-100 grid grid-rows-[78px_1fr] h-full min-h-[100dvh]`}>
         <NavBar />
         <main className="text-gray-600 bg-gray-100">
-        {children}
+          {children}
         </main>
       </body>
     </html>

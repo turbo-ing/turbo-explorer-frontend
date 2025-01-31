@@ -1,10 +1,15 @@
-import AddGameForm from '@/components/add-game-form'
+import AddGameForm from '@/components/AddGameForm'
+import BackButton from '@/components/BackButton'
 
 export default function AddGamePage() {
   return (
-    <div className="bg-gray-100 p-8">
-      <h1 className="text-3xl text-gray-600 font-bold mb-6">Add New Game</h1>
+    <div className="sm:bg-stone-100 bg-white h-full flex flex-col sm:p-8">
+      <BackButton href={'/'} className=' pl-4 sm:pl-0'>
+        Back to Games List
+      </BackButton>
+      <div className='grow flex align-middle items-center justify-center'>
       <AddGameForm />
+      </div>
     </div>
   )
 }

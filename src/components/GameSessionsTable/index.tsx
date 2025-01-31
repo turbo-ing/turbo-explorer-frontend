@@ -47,16 +47,13 @@ export default function GameSessionsTable<TData, TValue>({
     data,
     columns,
     state: {
-      // Provide both sorting + pagination in state
       sorting,
-      pagination: {
-        pageIndex: 0,
-        pageSize: 10,
-      },
+      // pagination: {
+      //   pageIndex: 0, 
+      //   pageSize: 10,
+      // },
     },
-    // Called whenever sorting changes
     onSortingChange: setSorting,
-    // Must enable this to use sorting
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),

@@ -61,37 +61,7 @@ async function getGames(): Promise<Game[]> {
 }
 
 export default async function TurboExplorer() {
-
-  //Where we'll store the games we pull from the API
-  const games = await getGames()
-  console.log(games);
-  
-
-  // //How we'll pull the games from the API
-  // useEffect(() => {
-  //   console.log("Pulling game objects from API backend...");
-  //   api.get('/apps').then((r) => {
-  //     const newGames: Game[] = [];
-  //     for (let i = 0; i < r.data.length; i++) {
-  //       const newGame: Game = {
-  //         id: r.data[i].id,
-  //         name: r.data[i].name,
-  //         description: r.data[i].description,
-  //         domain_name: r.data[i].domain_name,
-  //         game_id: r.data[i].game_id,
-  //         verification_key: r.data[i].verification_key,
-  //         sessions: r.data[i].session_count,
-  //         interactions: r.data[i].interaction_count,
-  //         slug: r.data[i].slug,
-  //         created_at: r.data[i].created_at,
-  //         updated_at: r.data[i].updated_at,
-  //         recent_blob_pull: r.data[i].recent_blob_pull,
-  //       }
-  //       newGames.push(newGame);
-  //     }
-  //     setGames(newGames);
-  //   })
-  // }, [])
+  const games = await getGames()  
 
   const totalSessions = games.reduce((sum, game) => sum + game.session_count, 0)
   const totalInteractions = games.reduce((sum, game) => sum + game.interaction_count, 0)
@@ -101,7 +71,7 @@ export default async function TurboExplorer() {
       <Container className='flex flex-col h-72 justify-center gap-6 ' color='bg-turbo-red gradient'>
         <div className='space-y-1 text-white'>
         <h1 className='text-5xl sm:text-6xl  font-medium'>
-          The Turbo Game Explorer</h1>
+          Turbo Game Explorer</h1>
         </div>
         <Search />
       </Container>
@@ -114,8 +84,8 @@ export default async function TurboExplorer() {
         <div className="mb-6">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold">Games List</h2>
-            <Link href="/add-game" className="bg-blue-500 text-white px-4 py-2 rounded-md flex items-center">
-              <Plus className="w-5 h-5 mr-2" />
+            <Link href="/add-game" className="bg-stone-900 text-white px-4 py-2 rounded-md flex items-center text-sm hover:bg-white hover:text-stone-900 hover:border-stone-900 border-transparent border transition-colors">
+              <Plus className="w-4 h-4 mr-2" />
               Add New Game
             </Link>
           </div>

@@ -20,12 +20,6 @@ import {
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 import { Button } from "../ui/button"
 
-// interface GameSessionsTableProps {
-//   sessions: Session[]
-//   currentPage: number
-//   totalPages: number
-//   onPageChange: (page: number) => void
-// }
 
 interface GameSessionTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]

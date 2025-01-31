@@ -11,7 +11,7 @@ import api from '@/util/api'
 import useIframeMessageHandler from '@/hook/useIframeErrorHandler'
 import IsNotIframe from '@/components/IsNotIframe'
 import BackButton from '@/components/BackButton'
-import { formatNamespaceURL } from "@/lib/celestia"
+import CeleniumBadge from '@/components/CeleniumBadge'
 
 export interface GameSession {
   id: string
@@ -60,16 +60,7 @@ export default async function GamePage({ params }: { params: { id: string } }) {
           </BackButton>
         </IsNotIframe>
         <div>
-          <div className='w-[8.5rem]'>
-          <Link href={formatNamespaceURL("turbo.game#" + game.domain_name + "#" + game.game_id)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className='flex text-xs bg-stone-900 text-white px-2 rounded-full py-1 hover:bg-white hover:text-stone-900 border border-transparent hover:border-stone-900'>View on celenium <ExternalLink className='size-3.5 ml-1' />
-            </span>
-          </Link>
-          </div>
-
+          <CeleniumBadge namespaceString={"turbo.game#" + game.domain_name + "#" + game.game_id}/>
           {/* Would be nice to have logo here */}
           <h1 className="text-3xl font-bold my-2">{game.name}</h1>
           <p className="font-medium mb-2">

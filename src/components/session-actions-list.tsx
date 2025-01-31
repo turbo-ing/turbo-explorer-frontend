@@ -1,7 +1,6 @@
 import { ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Interaction } from './turbo-explorer'
-import { EasyCelestia } from 'easy-celestia'
-import { formatNamespaceURL } from '@/lib/celestia'
+import CeleniumBadge from './CeleniumBadge'
 
 interface interactionsListProps {
   allActions: Interaction[]
@@ -29,7 +28,8 @@ export default function SessionActionsList({ allActions, actions, currentPage, t
             </pre>
             <div className="flex justify-between items-center mt-2">
               <span className="text-sm text-stone-600">By {action.peer_id}</span>
-              <a
+              <CeleniumBadge namespaceString={JSON.parse(action.body).ns}/>
+              {/* <a
                 href={formatNamespaceURL(JSON.parse(action.body).ns)}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -37,7 +37,7 @@ export default function SessionActionsList({ allActions, actions, currentPage, t
               >
                 View on Celenium
                 <ExternalLink className="w-4 h-4 ml-1" />
-              </a>
+              </a> */}
             </div>
           </div>
         ))}

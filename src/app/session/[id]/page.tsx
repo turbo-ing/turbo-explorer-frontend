@@ -13,6 +13,7 @@ import {
 } from '@/components/turbo-explorer'
 import api from '@/util/api'
 import BackButton from '@/components/BackButton'
+import Container from '@/components/Container'
 
 /*interface SessionEvent {
   id: string
@@ -157,7 +158,7 @@ export default function SessionPage() {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
   return (
-    <div className="min-h-screen text-stone-600 bg-stone-100 p-8">
+    <Container className="text-stone-600 bg-stone-100 p-8">
       
       <BackButton href={(game !== undefined) ? ("/game/" + game.slug) : "/"}>
         Back to Game
@@ -176,7 +177,7 @@ export default function SessionPage() {
         />
         <ZKProofSection proofs={zkProofs} />
       </div>
-    </div>
+    </Container>
   )
 }
 

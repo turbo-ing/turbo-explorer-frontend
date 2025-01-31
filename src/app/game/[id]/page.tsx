@@ -12,6 +12,7 @@ import useIframeMessageHandler from '@/hook/useIframeErrorHandler'
 import IsNotIframe from '@/components/IsNotIframe'
 import BackButton from '@/components/BackButton'
 import CeleniumBadge from '@/components/CeleniumBadge'
+import Container from '@/components/Container'
 
 export interface GameSession {
   id: string
@@ -53,21 +54,25 @@ export default async function GamePage({ params }: { params: { id: string } }) {
 
   return (
     <div className="lg:container mx-auto text-stone-600 bg-stone-100 max-w-[100vw]">
-      <div className='p-4 sm:p-8 '>
-        <IsNotIframe>
-          <BackButton href={"/"} className='mb-2'>
-            Back to Games List
-          </BackButton>
-        </IsNotIframe>
+      <Container className='p-4 sm:p-8 '>
+        <div className=' flex justify-between'>
+          <IsNotIframe>
+            <BackButton href={"/"} className='mb-2'>
+              Back to Games List
+            </BackButton>
+          </IsNotIframe>
+
+          <CeleniumBadge
+            namespaceString={"turbo.game#" + game.domain_name + "#" + game.game_id} />
+        </div>
         <div>
-          <CeleniumBadge namespaceString={"turbo.game#" + game.domain_name + "#" + game.game_id}/>
           {/* Would be nice to have logo here */}
           <h1 className="text-3xl font-bold my-2">{game.name}</h1>
           <p className="font-medium mb-2">
             {game.description}
           </p>
         </div>
-      </div>
+      </Container>
 
       <GameSessionsTable columns={columns} data={sessions} />
     </div>

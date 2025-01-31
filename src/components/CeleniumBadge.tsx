@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { EasyCelestia } from "easy-celestia";
 import { ExternalLink } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const celestia = new EasyCelestia({
   //don't need credentials to use namespace() function.
@@ -31,9 +32,9 @@ function formatNamespaceURL(rawNamespace: string): string {
 ///namespace/0000000000000000000000000000000000003bcd9a31095987be5063?tab=Blobs
 
 //"turbo.game#" + game.domain_name + "#" + game.game_id
-export default function CeleniumBadge({namespaceString}: {namespaceString: string}) {
+export default function CeleniumBadge({namespaceString, className}: {namespaceString: string, className?: string}) {
     return (
-        <div className='w-[8.5rem]'>
+        <div className={cn('w-[8.5rem]', className)}>
             <Link href={formatNamespaceURL(namespaceString)}
                 target="_blank"
                 rel="noopener noreferrer"

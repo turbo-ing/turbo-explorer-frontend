@@ -9,7 +9,7 @@ import { Game, SessionEvent } from '@/components/turbo-explorer'
 import { Session } from '@/components/turbo-explorer'
 import api from '@/util/api'
 import useIframeMessageHandler from '@/hook/useIframeErrorHandler'
-import IsNotIframe from '@/app/components/IsNotIframe'
+import IsNotIframe from '@/components/IsNotIframe'
 
 export interface GameSession {
   id: string

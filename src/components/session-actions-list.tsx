@@ -1,6 +1,7 @@
 import { ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Interaction } from './turbo-explorer'
 import { EasyCelestia } from 'easy-celestia'
+import { formatNamespaceURL } from '@/lib/celestia'
 
 interface interactionsListProps {
   allActions: Interaction[]
@@ -8,22 +9,6 @@ interface interactionsListProps {
   currentPage: number
   totalPages: number
   onPageChange: (page: number) => void
-}
-
-const celestia = new EasyCelestia({
-  //don't need credentials to use namespace() function.
-  network: 'mocha',
-  nodeEndpoint: '',
-  nodeApiKey: '',
-  celeniumApiKey: '',
-});
-
-function formatNamespaceURL(namespace : string): string {
-  let shrunkNamespace;
-  if(namespace.length > 56){
-    shrunkNamespace = namespace.substring(namespace.length-56, namespace.length);
-  } else shrunkNamespace = namespace;
-  return `https://mocha-4.celenium.io/namespace/`+shrunkNamespace+"?tab=Blobs";
 }
 
 export default function SessionActionsList({ allActions, actions, currentPage, totalPages, onPageChange }: interactionsListProps) {
@@ -45,7 +30,7 @@ export default function SessionActionsList({ allActions, actions, currentPage, t
             <div className="flex justify-between items-center mt-2">
               <span className="text-sm text-stone-600">By {action.peer_id}</span>
               <a
-                href={formatNamespaceURL(celestia.namespace((JSON.parse(action.body).ns)).toString('hex'))}//TODO: find a way to get namespace from the thing
+                href={formatNamespaceURL(JSON.parse(action.body).ns)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center text-blue-600 hover:underline text-sm"

@@ -74,7 +74,8 @@ export default function GameSessionsTable<TData, TValue>({
                 return (
                   <TableHead
                     key={header.id}
-                    className={`px-3 md:px-5 py-3 ${
+                    className={`px-3 md:px-5 py-3  whitespace-nowrap 
+                      ${
                       canSort ? "cursor-pointer select-none" : ""
                     }`}
                     onClick={canSort ? sortHandler : undefined}
@@ -112,7 +113,7 @@ export default function GameSessionsTable<TData, TValue>({
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
-                    className="px-3 md:px-5 py-3"
+                    className="px-3 md:px-5 py-3 whitespace-nowrap"
                   >
                     {flexRender(
                       cell.column.columnDef.cell,

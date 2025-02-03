@@ -23,6 +23,38 @@ export interface ZkProof {
   recent_blob_pull: bigint
 }
 
+interface ErrorResponse {
+  message: string;
+  status?: number;
+}
+
+// Add these interfaces for API responses
+interface SessionEventResponse {
+  id: string
+  session_id: string
+  peer_id: string
+  event: string
+  created_at: string
+  recent_blob_pull: bigint
+}
+
+interface InteractionResponse {
+  id: string
+  session_id: string
+  peer_id: string
+  body: string
+  created_at: string
+  recent_blob_pull: bigint
+}
+
+interface ZkProofResponse {
+  id: string
+  peer_id: string
+  proof: string
+  verification_key: string
+  recent_blob_pull: bigint
+}
+
 export default function SessionPage() {
   const params = useParams()
   const [session, setSession] = useState<Session | undefined>()
@@ -37,10 +69,10 @@ export default function SessionPage() {
   const actionsPerPage = 5
 
   useEffect(() => {
-    // If `params.id` doesn’t exist yet, don’t proceed
+    // If `params.id` doesn't exist yet, don't proceed
     if (!params.id) return
 
-    // Convert params.id to a string in case it’s an array
+    // Convert params.id to a string in case it's an array
     const sessionId = Array.isArray(params.id) ? params.id[0] : params.id
 
     // Fetch data function
@@ -69,7 +101,7 @@ export default function SessionPage() {
         ])
 
         // 3. Transform & store session events
-        const fetchedEvents: SessionEvent[] = eventsRes.data.map((item: any) => ({
+        const fetchedEvents: SessionEvent[] = eventsRes.data.map((item: SessionEventResponse) => ({
           id: item.id,
           session_id: item.session_id,
           peer_id: item.peer_id,
@@ -80,7 +112,7 @@ export default function SessionPage() {
         setSessionEvents(fetchedEvents)
 
         // 4. Transform & store interactions
-        const fetchedInteractions: Interaction[] = interactionsRes.data.map((item: any) => ({
+        const fetchedInteractions: Interaction[] = interactionsRes.data.map((item: InteractionResponse) => ({
           id: item.id,
           session_id: item.session_id,
           peer_id: item.peer_id,
@@ -91,7 +123,7 @@ export default function SessionPage() {
         setInteractions(fetchedInteractions)
 
         // 5. Transform & store ZK proofs
-        const fetchedProofs: ZkProof[] = proofsRes.data.map((item: any) => ({
+        const fetchedProofs: ZkProof[] = proofsRes.data.map((item: ZkProofResponse) => ({
           id: item.id,
           peer_id: item.peer_id,
           proof: item.proof,
@@ -116,8 +148,9 @@ export default function SessionPage() {
           recent_blob_pull: gameRes.data.recent_blob_pull,
         }
         setGame(fetchedGame)
-      } catch (error) {
-        console.error('Error fetching session data:', error)
+      } catch (error: unknown) {
+        const err = error as ErrorResponse;
+        console.error('Error fetching session data:', err.message);
       } finally {
         setLoading(false)
       }

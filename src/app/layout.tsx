@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Jura } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
+// import { Geist, Geist_Mono, Jura } from "next/font/google";
 import "./globals.css";
 import NavBar from "../components/NavBar";
 
@@ -13,11 +14,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const jura = Jura({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-jura',
-});
+// Jurs is Turbo themed font
+// const jura = Jura({
+//   subsets: ['latin'],
+//   weight: ['300', '400', '500', '600', '700'],
+//   variable: '--font-jura',
+// });
 
 export const metadata: Metadata = {
   title: "Create Next App",

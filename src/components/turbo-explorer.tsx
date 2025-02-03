@@ -1,12 +1,12 @@
 // import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import GamesList from './games-list';
-import { Box, Clock, ArrowRight, Plus } from 'lucide-react';
 import { config } from 'dotenv';
 import api from '@/util/api';
 import Container from './Container';
 import Search from './Search';
 import GameStats from './GameStats';
+import { Plus } from 'lucide-react';
 
 config();
 

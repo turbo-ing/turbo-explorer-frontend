@@ -1,4 +1,4 @@
-import { ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Interaction } from './turbo-explorer'
 import CeleniumBadge from './CeleniumBadge'
 

@@ -1,4 +1,4 @@
-import { Box, Clock, ArrowRight, Fingerprint , Gamepad } from "lucide-react";
+import { Clock, Fingerprint , Gamepad } from "lucide-react";
 
 type StatCardProps = {
     icon: React.ElementType;

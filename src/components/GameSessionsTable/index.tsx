@@ -60,7 +60,7 @@ export default function GameSessionsTable<TData, TValue>({
   })
 
   return (
-    <div className="rounded-md border bg-white h-full">
+    <div className="lg:rounded-lg border bg-white h-full max-w-[1200px] mx-auto lg:mb-4">
       <Table className="overflow-x-auto">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (

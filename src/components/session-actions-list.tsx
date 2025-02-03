@@ -1,7 +1,8 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 import { Interaction } from './turbo-explorer'
 import CeleniumBadge from './CeleniumBadge'
 import NotFoundElement from './NotFoundElement'
+import { Button } from './ui/button'
 
 interface interactionsListProps {
   allActions: Interaction[]
@@ -20,7 +21,7 @@ export default function SessionActionsList({ allActions, actions, currentPage, t
         <NotFoundElement message="No interactions found" />
       ) : (
         <>
-          <p className='text-sm mb-3'>Interactions {allActions.length}</p>
+          <p className='text-sm mb-3'>{allActions.length} Interactions</p>
           <div className="">
             {actions.map((action) => (
               <div key={action.id} className=" border-y py-4">
@@ -48,61 +49,50 @@ export default function SessionActionsList({ allActions, actions, currentPage, t
             ))}
           </div>
           <div className="mt-4 flex items-center justify-between">
-            <div className="flex-1 flex justify-between sm:hidden">
-              <button
+            {/* Pagination Controls */}
+            <div className="flex items-center justify-center space-x-2 px-2">
+              <Button
+                variant="outline"
+                className="h-8 w-8 p-0"
+                onClick={() => onPageChange(1)}
+                disabled={currentPage === 1}
+              >
+                <span className="sr-only">Go to first page</span>
+                <ChevronsLeft className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                className="h-8 w-8 p-0"
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="relative inline-flex items-center px-4 py-2 border border-stone-300 text-sm font-medium rounded-md text-stone-700 bg-white hover:bg-stone-50"
               >
-                Previous
-              </button>
-              <button
+                <span className="sr-only">Go to previous page</span>
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+
+              <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+                Page {currentPage} of{" "}
+                {totalPages}
+              </div>
+
+              <Button
+                variant="outline"
+                className="h-8 w-8 p-0"
                 onClick={() => onPageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="ml-3 relative inline-flex items-center px-4 py-2 border border-stone-300 text-sm font-medium rounded-md text-stone-700 bg-white hover:bg-stone-50"
+                disabled={currentPage >= totalPages}
               >
-                Next
-              </button>
-            </div>
-            <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-              <div>
-                <p className="text-sm text-stone-700">
-                  Showing <span className="font-medium">{(currentPage - 1) * 5 + 1}</span> to <span className="font-medium">{Math.min(currentPage * 5, allActions.length)}</span> of{' '}
-                  <span className="font-medium">{allActions.length}</span> results
-                </p>
-              </div>
-              <div>
-                <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-                  <button
-                    onClick={() => onPageChange(currentPage - 1)}
-                    disabled={currentPage === 1}
-                    className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-stone-300 bg-white text-sm font-medium text-stone-500 hover:bg-stone-50"
-                  >
-                    <span className="sr-only">Previous</span>
-                    <ChevronLeft className="h-5 w-5" aria-hidden="true" />
-                  </button>
-                  {[...Array(totalPages)].map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => onPageChange(i + 1)}
-                      className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${currentPage === i + 1
-                        ? 'z-10 bg-indigo-50 border-indigo-500 text-indigo-600'
-                        : 'bg-white border-stone-300 text-stone-500 hover:bg-stone-50'
-                        }`}
-                    >
-                      {i + 1}
-                    </button>
-                  ))}
-                  <button
-                    onClick={() => onPageChange(currentPage + 1)}
-                    disabled={currentPage === totalPages}
-                    className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-stone-300 bg-white text-sm font-medium text-stone-500 hover:bg-stone-50"
-                  >
-                    <span className="sr-only">Next</span>
-                    <ChevronRight className="h-5 w-5" aria-hidden="true" />
-                  </button>
-                </nav>
-              </div>
+                <span className="sr-only">Go to next page</span>
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                className="h-8 w-8 p-0"
+                onClick={() => onPageChange(totalPages)}
+                disabled={currentPage >= totalPages}
+              >
+                <span className="sr-only">Go to last page</span>
+                <ChevronsRight className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </>

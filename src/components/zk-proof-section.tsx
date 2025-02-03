@@ -21,7 +21,7 @@ export default function ZKProofSection({ proofs }: ZkProofSectionProps) {
           <NotFoundElement message="No proofs found" />
         ) : (
           proofs.map((proof) => (
-            <div key={proof.id} className="border rounded-lg p-4">
+            <div key={proof.id} className="border-b py-4">
               <div className="flex justify-between items-start mb-2">
                 <span className="font-medium">Proof {"("}ID: {proof.id}{")"}</span>
                 <span className="text-sm text-stone-500">{new Date(Number(proof.recent_blob_pull)).toLocaleString()}</span>
@@ -32,7 +32,7 @@ export default function ZKProofSection({ proofs }: ZkProofSectionProps) {
               <div className="flex justify-end space-x-2">
                 <Button className="">
                   <Check className="w-4 h-4" />
-                  Verify proof {"("}ID: {proof.id}{")"}
+                  Verify proof
                 </Button>
                 <Button variant="outline">
                   <Download className="w-4 h-4" />

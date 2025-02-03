@@ -50,10 +50,10 @@ export default async function GamePage({ params }: { params: { id: string } }) {
   return (
     <div className="lg:container mx-auto bg-stone-100 max-w-[100vw]">
       <Container className='p-4 sm:p-8 '>
-        <div className=' flex justify-between'>
+        <div className='flex justify-between'>
           <IsNotIframe>
             <BackButton href={"/"} className='mb-2'>
-              Back to Games List
+              Back to Games
             </BackButton>
           </IsNotIframe>
 

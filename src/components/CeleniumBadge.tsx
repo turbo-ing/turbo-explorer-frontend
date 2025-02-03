@@ -39,7 +39,7 @@ export default function CeleniumBadge({namespaceString, className}: {namespaceSt
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                <span className='flex text-xs bg-stone-900 text-white px-2 rounded-full py-1 hover:bg-white hover:text-stone-900 border border-transparent hover:border-stone-900'>View on celenium <ExternalLink className='size-3.5 ml-1' />
+                <span className='flex text-xs bg-stone-900 text-white px-2 rounded-full py-1 hover:bg-white hover:text-stone-900 border border-transparent hover:border-stone-900 whitespace-nowrap transition-colors'>View on celenium <ExternalLink className='size-3.5 ml-1' />
                 </span>
             </Link>
         </div>

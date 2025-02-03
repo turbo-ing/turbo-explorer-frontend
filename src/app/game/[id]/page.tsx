@@ -48,7 +48,7 @@ export default async function GamePage({ params }: { params: { id: string } }) {
   if (!game) return <div className="p-8">Game not found.</div>;
 
   return (
-    <div className="lg:container mx-auto text-stone-600 bg-stone-100 max-w-[100vw]">
+    <div className="lg:container mx-auto bg-stone-100 max-w-[100vw]">
       <Container className='p-4 sm:p-8 '>
         <div className=' flex justify-between'>
           <IsNotIframe>
@@ -63,7 +63,7 @@ export default async function GamePage({ params }: { params: { id: string } }) {
         <div>
           {/* Would be nice to have logo here */}
           <h1 className="text-3xl font-bold my-2">{game.name}</h1>
-          <p className="font-medium mb-2">
+          <p className=" mb-2 text-stone-600">
             {game.description}
           </p>
         </div>

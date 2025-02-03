@@ -8,7 +8,7 @@ interface SessionTimelineProps {
 export default function SessionTimeline({ events }: SessionTimelineProps) {
   return (
     <div className="bg-white shadow-md rounded-lg p-4 sm:p-8">
-      <h2 className="text-xl font-semibold mb-4">Session Timeline</h2>
+      <h2 className="text-xl font-semibold mb-5">Session Timeline</h2>
       <div className="relative">
         <div className="absolute top-0 bottom-0 left-4 w-0.5 bg-stone-300">
           <div className="absolute -top-2 left-1/2 -translate-x-1/2 size-2 rounded-full bg-white border-2 border-stone-300" />

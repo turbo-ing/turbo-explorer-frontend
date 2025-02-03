@@ -11,16 +11,9 @@ interface ZkProofSectionProps {
 export default function ZKProofSection({ proofs }: ZkProofSectionProps) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">ZK Proofs</h2>
         <div className="flex space-x-2">
-          {/*<button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors">
-            Verify
-          </button>
-          <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center">
-            <Download className="w-4 h-4 mr-2" />
-            Download Verification Key
-          </button>*/}
         </div>
       </div>
       <div className="space-y-4">

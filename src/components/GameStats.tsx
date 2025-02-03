@@ -1,4 +1,4 @@
-import { Clock, Fingerprint , Gamepad } from "lucide-react";
+import { Clock, Fingerprint, Gamepad } from "lucide-react";
 
 type StatCardProps = {
     icon: React.ElementType;
@@ -10,11 +10,11 @@ const StatCard: React.FC<StatCardProps> = ({ icon: Icon, value, label }) => {
     return (
         <div className="bg-white shadow-md rounded-lg p-3 sm:p-6 flex items-center space-x-0 sm:space-x-4 space-y-3 sm:space-y-0 flex-col sm:flex-row border">
             <div className="sm:p-2">
-                <Icon className="size-7 sm:size-8 text-stone-600" />
+                <Icon className="size-7 sm:size-8" />
             </div>
             <div className="flex flex-col items-center sm:block space-y-1 sm:space-y-0">
                 <div className="text-2xl font-bold">{value}</div>
-                <div className="sm:text-lg text-stone-600">{label}</div>
+                <div className="sm:text-lg">{label}</div>
             </div>
         </div>
     );

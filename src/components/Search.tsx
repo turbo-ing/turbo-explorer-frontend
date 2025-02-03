@@ -14,18 +14,31 @@ import { SearchIcon } from "lucide-react"
 import { Button } from "./ui/button"
 import { useState } from "react"
 
-export default function Search() {
+interface SearchProps {
+    initialQuery?: string;
+    initialFilter?: FilterType;
+    overrideHandleSubmit?: (query: string, filter: FilterType) => void;
+}
+
+export default function Search({ initialQuery, initialFilter, overrideHandleSubmit }: SearchProps) {
     const router = useRouter();
-    const [query, setQuery] = useState("")
-    const [filter, setFilter] = useState<FilterType>(FilterType.ALL);
+    const [query, setQuery] = useState(initialQuery || "");
+    const [filter, setFilter] = useState<FilterType>(initialFilter || FilterType.ALL);
 
     const handleSubmit = () => {
-        const searchParams = new URLSearchParams({
-            query,
-            filter,
-        }).toString();
-        console.log(`/search?${searchParams}`);
-        router.push(`/search?${searchParams}`);
+        if (overrideHandleSubmit) {
+            overrideHandleSubmit(query, filter);
+        } else {
+            const searchParams = new URLSearchParams();
+            if (query !== "") {
+                searchParams.set("query", query);
+            }
+            if (filter !== FilterType.ALL) {
+                searchParams.set("filter", filter);
+            }
+            const queryString = searchParams.toString();
+            router.push(`/search${queryString ? `?${queryString}` : ""}`);
+        }
     };
 
     return (
@@ -33,7 +46,7 @@ export default function Search() {
             <Selector filter={filter} setFilter={setFilter} />
             <Input
                 className="bg-white rounded-none"
-                placeholder="Search for "
+                placeholder={`Search for ${filter}`}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={(e) => {
@@ -44,7 +57,7 @@ export default function Search() {
             />
             <Button 
             onClick={handleSubmit}
-            className="rounded-l-none hover:bg-white border border-l-0 z-10 hover:text-stone-900 bg-stone-900 text-white">
+            className="rounded-l-none hover:bg-white border  z-10 hover:text-stone-900 bg-stone-900 text-white">
                 <SearchIcon className="text-inherit" />
             </Button>
         </div>
@@ -56,7 +69,7 @@ interface SelectorProps {
     setFilter: (value: FilterType) => void;
 }
 
-enum FilterType {
+export enum FilterType {
     ALL = "all",
     USER = "user",
     GAMES = "games",
@@ -67,7 +80,7 @@ enum FilterType {
 function Selector({ filter, setFilter }: SelectorProps) {
     return (
         <Select value={filter} onValueChange={setFilter}>
-            <SelectTrigger className="w-[125px] rounded-r-none border-r-none bg-white">
+            <SelectTrigger className="w-[150px] rounded-r-none ] bg-white">
                 <SelectValue placeholder="All filters" />
             </SelectTrigger>
             <SelectContent>

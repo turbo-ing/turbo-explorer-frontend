@@ -28,7 +28,11 @@ async function fetchSessionsBySlug(slug: string): Promise<Session[]> {
   return data;
 }
 
-export default async function GamePage({ params }: { params: { id: string } }) {
+export default async function GamePage({
+  params
+}: {
+  params: Promise<{ id: string }>;
+}) {
   let game: Game | null = null;
   let sessions: Session[] = [];
   let error: string | null = null;

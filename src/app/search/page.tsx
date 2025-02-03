@@ -9,11 +9,11 @@ interface SearchParams {
 }
 
 export default async function SearchPage({
-  searchParams,
+    params,
 }: {
-  searchParams: SearchParams;
+  params: Promise<SearchParams>;
 }) {
-    const {query, filter} = await searchParams;
+    const {query, filter} = await params;
 
   // Perform SSR on the initial request.
   const results = await fetchSearch(query|| "", filter as FilterType);

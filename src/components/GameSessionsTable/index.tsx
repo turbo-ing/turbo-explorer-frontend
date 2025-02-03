@@ -61,7 +61,7 @@ export default function GameSessionsTable<TData, TValue>({
 
   return (
     <div className="lg:rounded-lg border bg-white h-full max-w-[1200px] mx-auto lg:mb-4">
-      <Table className="overflow-x-auto">
+      <Table className="overflow-x-visible">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>

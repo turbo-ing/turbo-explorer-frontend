@@ -78,7 +78,7 @@ export default function SessionPage() {
     // Fetch data function
     async function fetchData(id: string) {
       try {
-        // 1. Get the session by ID
+        // TODO: Create api endpoint that does this in one call
         const sessionRes = await api.get(`/sessions/id/${id}`)
         const sessionData: Session = {
           id: sessionRes.data.id,
@@ -92,7 +92,6 @@ export default function SessionPage() {
         }
         setSession(sessionData)
 
-        // 2. Fetch session-related data in parallel
         const [eventsRes, interactionsRes, proofsRes, gameRes] = await Promise.all([
           api.get(`/session-events/sessionId/${sessionData.id}`),
           api.get(`/interactions/sessionId/${sessionData.id}`),
@@ -174,12 +173,12 @@ export default function SessionPage() {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
   return (
-    <Container className="text-stone-600 bg-stone-100 p-8 max-w-[100vw]">
-      <BackButton href={game ? `/game/${game.slug}` : '/'}>
-        Back to Game
+    <Container className="text-stone-600 bg-stone-100 p-4 sm:p-8 max-w-[1000px]">
+      <BackButton href={game ? `/game/${game.slug}` : '/'} className="mb-4">
+        Back to {game?.name || "game"}
       </BackButton>
 
-      <h1 className="text-3xl font-bold mb-6">Session Details: {session.id}</h1>
+      <h1 className="text-3xl font-bold mb-6">Session {session.id} Details</h1>
 
       <div className="space-y-8">
         <SessionTimeline events={sessionEvents} />

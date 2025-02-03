@@ -1,6 +1,7 @@
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { Interaction } from './turbo-explorer'
 import CeleniumBadge from './CeleniumBadge'
+import NotFoundElement from './NotFoundElement'
 
 interface interactionsListProps {
   allActions: Interaction[]
@@ -16,7 +17,11 @@ export default function SessionActionsList({ allActions, actions, currentPage, t
     <div className="bg-white shadow-md rounded-lg p-6">
       <p>INTERACTION COUNT: {allActions.length}</p>
       <h2 className="text-xl font-semibold mb-4">Session Interactions</h2>
-      <div className="space-y-4">
+      {actions && actions.length === 0 ? (
+        <NotFoundElement message="No interactions found" />
+      ) : (
+        <>
+        <div className="space-y-4">
         {actions.map((action) => (
           <div key={action.id} className="border rounded-lg p-4">
             <div className="flex justify-between items-start mb-2">
@@ -101,6 +106,8 @@ export default function SessionActionsList({ allActions, actions, currentPage, t
           </div>
         </div>
       </div>
+      </>
+      )}
     </div>
   )
 }

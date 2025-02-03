@@ -1,6 +1,8 @@
 import { ZkProof } from '@/app/session/[id]/page'
-import { Download, CheckCircle } from 'lucide-react'
-
+import { Download, CheckCircle, Verified, Check } from 'lucide-react'
+import { FileQuestion } from 'lucide-react'
+import NotFoundElement from './NotFoundElement'
+import { Button } from './ui/button'
 
 interface ZkProofSectionProps {
   proofs: ZkProof[]
@@ -22,27 +24,39 @@ export default function ZKProofSection({ proofs }: ZkProofSectionProps) {
         </div>
       </div>
       <div className="space-y-4">
-        {proofs.map((proof) => (
-          <div key={proof.id} className="border rounded-lg p-4">
-            <div className="flex justify-between items-start mb-2">
-              <span className="font-medium">Proof {"("}ID: {proof.id}{")"}</span>
-              <span className="text-sm text-stone-500">{new Date(Number(proof.recent_blob_pull)).toLocaleString()}</span>
+        {proofs && proofs.length === 0 ? (
+          <NotFoundElement message="No proofs found" />
+        ) : (
+          proofs.map((proof) => (
+            <div key={proof.id} className="border rounded-lg p-4">
+              <div className="flex justify-between items-start mb-2">
+                <span className="font-medium">Proof {"("}ID: {proof.id}{")"}</span>
+                <span className="text-sm text-stone-500">{new Date(Number(proof.recent_blob_pull)).toLocaleString()}</span>
+              </div>
+              <pre className="bg-stone-100 p-2 rounded text-sm overflow-x-auto mb-4">
+                {JSON.stringify(JSON.parse(proof.proof), null, 1)}
+              </pre>
+              <div className="flex justify-end space-x-2">
+                <Button className="">
+                  <Check className="w-4 h-4" />
+                  Verify proof {"("}ID: {proof.id}{")"}
+                </Button>
+                <Button variant="outline">
+                  <Download className="w-4 h-4" />
+                  Download Proof
+                </Button>
+                {/* <Button className="bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex items-center text-sm">
+                  <CheckCircle className="w-4 h-4" />
+                  Verify proof {"("}ID: {proof.id}{")"}
+                </Button>
+                <Button variant="outline" className=" bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center text-sm">
+                  <Download className="w-4 h-4" />
+                  Download Proof
+                </Button> */}
+              </div>
             </div>
-            <pre className="bg-stone-100 p-2 rounded text-sm overflow-x-auto mb-4">
-              {JSON.stringify(JSON.parse(proof.proof), null, 1)}
-            </pre>
-            <div className="flex justify-end space-x-2">
-              <button className="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors flex items-center text-sm">
-                <CheckCircle className="w-4 h-4 mr-2" />
-                Verify proof {"("}ID: {proof.id}{")"}
-              </button>
-              <button className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 transition-colors flex items-center text-sm">
-                <Download className="w-4 h-4 mr-2" />
-                Download Proof
-              </button>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   )

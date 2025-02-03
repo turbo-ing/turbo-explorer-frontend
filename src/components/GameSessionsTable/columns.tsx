@@ -72,7 +72,7 @@ export const columns: ColumnDef<Session>[] = [
     cell: ({ row }) => (
       <Link 
         href={`/session/${row.original.id}`} 
-        className="text-indigo-600 hover:text-indigo-900 flex justify-center md:justify-start"
+        className="text-indigo-600 hover:text-indigo-900 flex justify-center lg:justify-normal"
       >
         <Eye className="w-5 h-5" />
       </Link>

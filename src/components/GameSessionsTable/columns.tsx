@@ -48,7 +48,6 @@ export const columns: ColumnDef<Session>[] = [
   {
     accessorKey: "id",
     header: "ID",
-
   },
   {
     accessorKey: "topic",
@@ -73,7 +72,7 @@ export const columns: ColumnDef<Session>[] = [
     cell: ({ row }) => (
       <Link 
         href={`/session/${row.original.id}`} 
-        className="text-indigo-600 hover:text-indigo-900 flex justify-center"
+        className="text-indigo-600 hover:text-indigo-900 flex justify-center md:justify-start"
       >
         <Eye className="w-5 h-5" />
       </Link>

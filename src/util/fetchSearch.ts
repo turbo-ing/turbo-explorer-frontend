@@ -1,5 +1,4 @@
 import { FilterType } from "@/components/Search";
-import api from "./api";
 
 export interface SearchQueryResult {
     userId: number;

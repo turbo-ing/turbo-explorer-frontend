@@ -1,8 +1,7 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Search, { FilterType } from "./Search";
 import { fetchSearch, SearchQueryResult } from "@/util/fetchSearch";
-import { ChevronDown } from "lucide-react";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectGroup, SelectItem } from "@/components/ui/select";
 
 interface SearchPanelProps {

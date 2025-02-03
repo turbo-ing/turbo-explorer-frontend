@@ -1,4 +1,4 @@
-import { UserPlus, UserMinus, GitCommitHorizontal } from 'lucide-react'
+import { UserPlus, UserMinus } from 'lucide-react'
 import { SessionEvent } from './turbo-explorer'
 
 interface SessionTimelineProps {

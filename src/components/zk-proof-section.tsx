@@ -1,6 +1,5 @@
 import { ZkProof } from '@/app/session/[id]/page'
-import { Download, CheckCircle, Verified, Check } from 'lucide-react'
-import { FileQuestion } from 'lucide-react'
+import { Download, Check } from 'lucide-react'
 import NotFoundElement from './NotFoundElement'
 import { Button } from './ui/button'
 

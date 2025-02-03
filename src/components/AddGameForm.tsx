@@ -34,7 +34,7 @@ export default function AddGameForm() {
       console.log('Submitted data:', data);
       console.log('Response data:', response.data);
 
-      await router.push(`/game/${name}}`);
+      await router.push(`/game/${name}`);
     } catch (error) {
       console.error('Error submitting data:', error);
       alert('Failed to submit. Please try again.');

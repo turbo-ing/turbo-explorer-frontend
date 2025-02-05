@@ -41,7 +41,7 @@ export default function GameSessionsTable<TData, TValue>({
   data,
 }: GameSessionTableProps<TData, TValue>) {
   // State to manage sorting
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([{ id: "created_at", desc: true }])
 
   const table = useReactTable({
     data,

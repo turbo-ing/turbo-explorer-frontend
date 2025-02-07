@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 // Create an Axios instance
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const api = (fetchOptions?: Record<string, any>) => axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_ENDPOINT,
   timeout: 10000,

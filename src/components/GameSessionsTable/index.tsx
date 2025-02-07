@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 import {
   ColumnDef,
   flexRender,
@@ -9,7 +9,7 @@ import {
   getSortedRowModel,
   SortingState,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
   Table,
@@ -18,22 +18,22 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
-import { 
-  ChevronLeft, 
-  ChevronRight, 
-  ChevronsLeft, 
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
   ChevronsRight,
   ArrowUp,
   ArrowDown,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Button } from "../ui/button"
+import { Button } from "../ui/button";
 
 interface GameSessionTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
 }
 
 export default function GameSessionsTable<TData, TValue>({
@@ -41,7 +41,9 @@ export default function GameSessionsTable<TData, TValue>({
   data,
 }: GameSessionTableProps<TData, TValue>) {
   // State to manage sorting
-  const [sorting, setSorting] = React.useState<SortingState>([{ id: "created_at", desc: true }])
+  const [sorting, setSorting] = React.useState<SortingState>([
+    { id: "recent_blob_pull", desc: true },
+  ]);
 
   const table = useReactTable({
     data,
@@ -49,7 +51,7 @@ export default function GameSessionsTable<TData, TValue>({
     state: {
       sorting,
       // pagination: {
-      //   pageIndex: 0, 
+      //   pageIndex: 0,
       //   pageSize: 10,
       // },
     },
@@ -57,7 +59,7 @@ export default function GameSessionsTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-  })
+  });
 
   return (
     <div className="lg:rounded-lg bg-white h-full max-w-[1200px] mx-auto lg:mb-4">
@@ -67,37 +69,34 @@ export default function GameSessionsTable<TData, TValue>({
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 // Sorting helpers:
-                const canSort = header.column.getCanSort()
-                const isSorted = header.column.getIsSorted()
-                const sortHandler = header.column.getToggleSortingHandler()
+                const canSort = header.column.getCanSort();
+                const isSorted = header.column.getIsSorted();
+                const sortHandler = header.column.getToggleSortingHandler();
 
                 return (
                   <TableHead
                     key={header.id}
                     className={`px-3 md:px-5 py-3  whitespace-nowrap 
-                      ${
-                      canSort ? "cursor-pointer select-none" : ""
-                    }`}
+                      ${canSort ? "cursor-pointer select-none" : ""}`}
                     onClick={canSort ? sortHandler : undefined}
                   >
-                    {header.isPlaceholder
-                      ? null
-                      : (
-                          <div className="flex items-center space-x-1">
-                            {/* The actual header label */}
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                    {header.isPlaceholder ? null : (
+                      <div className="flex items-center space-x-1">
+                        {/* The actual header label */}
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
 
-                            {/* Sort indicator */}
-                            {isSorted === "asc" && <ArrowUp className="w-4 h-4" />}
-                            {isSorted === "desc" && <ArrowDown className="w-4 h-4" />}
-                          </div>
-                        )
-                    }
+                        {/* Sort indicator */}
+                        {isSorted === "asc" && <ArrowUp className="w-4 h-4" />}
+                        {isSorted === "desc" && (
+                          <ArrowDown className="w-4 h-4" />
+                        )}
+                      </div>
+                    )}
                   </TableHead>
-                )
+                );
               })}
             </TableRow>
           ))}
@@ -115,10 +114,7 @@ export default function GameSessionsTable<TData, TValue>({
                     key={cell.id}
                     className="px-3 md:px-5 py-3 whitespace-nowrap"
                   >
-                    {flexRender(
-                      cell.column.columnDef.cell,
-                      cell.getContext()
-                    )}
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}
               </TableRow>
@@ -188,7 +184,7 @@ export default function GameSessionsTable<TData, TValue>({
             className="border rounded px-2 py-1"
             value={table.getState().pagination.pageSize}
             onChange={(e) => {
-              table.setPageSize(Number(e.target.value))
+              table.setPageSize(Number(e.target.value));
             }}
           >
             {[5, 10, 20, 30].map((pageSize) => (
@@ -200,5 +196,5 @@ export default function GameSessionsTable<TData, TValue>({
         </div>
       </div>
     </div>
-  )
+  );
 }

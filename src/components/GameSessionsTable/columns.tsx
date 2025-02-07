@@ -1,54 +1,50 @@
-"use client"
+"use client";
 
-import { ColumnDef } from "@tanstack/react-table"
-import { Session } from '../turbo-explorer'
+import { ColumnDef } from "@tanstack/react-table";
+import { Session } from "../turbo-explorer";
 import Link from "next/link";
 import { Eye } from "lucide-react";
 
 // Helper function to display "X time "
 function formatTimeAgo(date: Date | string): string {
   // Convert incoming date (possibly string) to a Date object
-  const validDate = typeof date === 'string' ? new Date(date) : date
+  const validDate = typeof date === "string" ? new Date(date) : date;
 
   if (!(validDate instanceof Date) || isNaN(validDate.getTime())) {
-    throw new Error("Invalid date provided")
+    throw new Error("Invalid date provided");
   }
 
-  const now = new Date()
-  const seconds = Math.floor((now.getTime() - validDate.getTime()) / 1000)
+  const now = new Date();
+  const seconds = Math.floor((now.getTime() - validDate.getTime()) / 1000);
 
   if (seconds < 60) {
-    return "just now"
+    return "just now";
   }
-  const minutes = Math.floor(seconds / 60)
+  const minutes = Math.floor(seconds / 60);
   if (minutes < 60) {
-    return `${minutes} minute${minutes > 1 ? "s" : ""}`
+    return `${minutes} minute${minutes > 1 ? "s" : ""}`;
   }
-  const hours = Math.floor(minutes / 60)
+  const hours = Math.floor(minutes / 60);
   if (hours < 24) {
-    return `${hours} hour${hours > 1 ? "s" : ""}`
+    return `${hours} hour${hours > 1 ? "s" : ""}`;
   }
-  const days = Math.floor(hours / 24)
+  const days = Math.floor(hours / 24);
   if (days < 7) {
-    return `${days} day${days > 1 ? "s" : ""}`
+    return `${days} day${days > 1 ? "s" : ""}`;
   }
-  const weeks = Math.floor(days / 7)
+  const weeks = Math.floor(days / 7);
   if (weeks < 5) {
-    return `${weeks} week${weeks > 1 ? "s" : ""}`
+    return `${weeks} week${weeks > 1 ? "s" : ""}`;
   }
-  const months = Math.floor(days / 30)
+  const months = Math.floor(days / 30);
   if (months < 12) {
-    return `${months} month${months > 1 ? "s" : ""}`
+    return `${months} month${months > 1 ? "s" : ""}`;
   }
-  const years = Math.floor(months / 12)
-  return `${years} year${years > 1 ? "s" : ""}`
+  const years = Math.floor(months / 12);
+  return `${years} year${years > 1 ? "s" : ""}`;
 }
 
 export const columns: ColumnDef<Session>[] = [
-  {
-    accessorKey: "id",
-    header: "ID",
-  },
   {
     accessorKey: "topic",
     header: "Topic ID",
@@ -57,9 +53,10 @@ export const columns: ColumnDef<Session>[] = [
     cell: ({ row }) => row.original.topic.split("#")[2],
   },
   {
-    accessorKey: "created_at",
+    accessorKey: "recent_blob_pull",
     header: "Age",
-    cell: ({ row }) => formatTimeAgo(row.original.created_at),
+    cell: ({ row }) =>
+      formatTimeAgo(new Date(Number(row.original.recent_blob_pull))),
   },
   {
     accessorKey: "interaction_count",
@@ -70,12 +67,12 @@ export const columns: ColumnDef<Session>[] = [
     header: "Actions",
     enableSorting: false,
     cell: ({ row }) => (
-      <Link 
-        href={`/session/${row.original.id}`} 
+      <Link
+        href={`/session/${row.original.id}`}
         className="text-indigo-600 hover:text-indigo-900 flex justify-center lg:justify-normal"
       >
         <Eye className="w-5 h-5" />
       </Link>
     ),
   },
-]
+];

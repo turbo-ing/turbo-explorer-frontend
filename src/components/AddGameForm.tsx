@@ -31,7 +31,7 @@ export default function AddGameForm() {
       const params = new URLSearchParams({ name, description, domain_name, game_id, verification_key });
 
       // Send API request
-      const response = await api.post(`/apps/addApp?${params.toString()}`);
+      const response = await api().post(`/apps/addApp?${params.toString()}`);
       console.log('Submitted data:', data);
       console.log('Response data:', response.data);
 

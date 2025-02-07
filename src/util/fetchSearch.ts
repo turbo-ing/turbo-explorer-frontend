@@ -22,7 +22,7 @@ export async function fetchSearch(query: string, filter: FilterType, fetchOption
 
     // TODO: Implement this in backend
     // const url = `/search?q=${encodeURIComponent(query)}&f=${encodeURIComponent(filter? filter.toString() : "")}`
-    // const {data} = await api.get(url, fetchOptions);
+    // const {data} = await api().get(url, fetchOptions);
   
     return data;
   }

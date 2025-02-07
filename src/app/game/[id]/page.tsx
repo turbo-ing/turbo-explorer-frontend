@@ -19,12 +19,12 @@ export interface GameSession {
 export const dynamic = 'force-dynamic'; // Enable dynamic data fetching
 
 async function fetchGameBySlug(slug: string): Promise<Game> {
-  const { data } = await api.get(`/apps/slug/${slug}`);
+  const { data } = await api().get(`/apps/slug/${slug}`);
   return data;
 }
 
 async function fetchSessionsBySlug(slug: string): Promise<Session[]> {
-  const { data } = await api.get(`apps/slug/${slug}/sessions`);
+  const { data } = await api().get(`apps/slug/${slug}/sessions`);
   return data;
 }
 

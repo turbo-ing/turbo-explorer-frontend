@@ -79,7 +79,7 @@ export default function SessionPage() {
     async function fetchData(id: string) {
       try {
         // TODO: Create api endpoint that does this in one call
-        const sessionRes = await api.get(`/sessions/id/${id}`)
+        const sessionRes = await api().get(`/sessions/id/${id}`)
         const sessionData: Session = {
           id: sessionRes.data.id,
           app_id: sessionRes.data.app_id,
@@ -93,10 +93,10 @@ export default function SessionPage() {
         setSession(sessionData)
 
         const [eventsRes, interactionsRes, proofsRes, gameRes] = await Promise.all([
-          api.get(`/session-events/sessionId/${sessionData.id}`),
-          api.get(`/interactions/sessionId/${sessionData.id}`),
-          api.get(`/zkProofs/sessionId/${sessionData.id}`),
-          api.get(`/apps/${sessionData.app_id}`),
+          api().get(`/session-events/sessionId/${sessionData.id}`),
+          api().get(`/interactions/sessionId/${sessionData.id}`),
+          api().get(`/zkProofs/sessionId/${sessionData.id}`),
+          api().get(`/apps/${sessionData.app_id}`),
         ])
 
         // 3. Transform & store session events

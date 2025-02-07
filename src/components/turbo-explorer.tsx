@@ -56,7 +56,7 @@ export interface Interaction {
 }
 
 async function getGames(): Promise<Game[]> {
-  const { data } = await api.get(`/apps`);
+  const { data } = await api().get(`/apps`);
   return data;
 }
 

@@ -59,6 +59,12 @@ export const columns: ColumnDef<Session>[] = [
       formatTimeAgo(new Date(Number(row.original.recent_blob_pull))),
   },
   {
+    accessorKey: "created_at",
+    header: "Created At",
+    cell: ({ row }) =>
+      new Date(Number(row.original.recent_blob_pull)).toLocaleString(),
+  },
+  {
     accessorKey: "interaction_count",
     header: "Interactions",
   },

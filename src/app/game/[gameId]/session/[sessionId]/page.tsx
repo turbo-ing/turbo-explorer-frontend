@@ -18,6 +18,12 @@ const getSessionDetails = async (sessionId: string, gameSlug: string) => {
       proofs: [],
       appData: {
         name: "game",
+      },
+      session: {
+        id: sessionId,
+        appId: gameSlug,
+        dateTime: new Date().toISOString(),
+        interactionCount: 0,
       }
     }
   }

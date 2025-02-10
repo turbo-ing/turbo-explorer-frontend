@@ -37,7 +37,6 @@ export default async function GamePage({
   let error: string | null = null;
 
   const { gameId } = await params;
-  console.log(gameId);
   try {
     sessions = await fetchSessionsBySlug(gameId);
     game = await fetchGameBySlug(gameId);

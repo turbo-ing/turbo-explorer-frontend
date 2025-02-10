@@ -62,12 +62,12 @@ export default function RootLayout({
         <link
           rel="icon"
           type="image/x-icon"
-          href="/favicon.ico"
+          href="/favicon.svg"
         />
         <link
           rel="shortcut icon"
           type="image/x-icon"
-          href="/favicon.ico"
+          href="/favicon.svg"
         />
       </head>
       <body

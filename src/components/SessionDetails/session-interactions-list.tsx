@@ -1,8 +1,8 @@
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
-import { Interaction } from './turbo-explorer'
-import CeleniumBadge from './CeleniumBadge'
-import NotFoundElement from './NotFoundElement'
-import { Button } from './ui/button'
+import { Interaction } from '../turbo-explorer'
+import CeleniumBadge from '../CeleniumBadge'
+import NotFoundElement from '../NotFoundElement'
+import { Button } from '../ui/button'
 
 interface interactionsListProps {
   allActions: Interaction[]
@@ -12,7 +12,7 @@ interface interactionsListProps {
   onPageChange: (page: number) => void
 }
 
-export default function SessionActionsList({ allActions, actions, currentPage, totalPages, onPageChange }: interactionsListProps) {
+export default function SessionInteractionsList({ allActions, actions, currentPage, totalPages, onPageChange }: interactionsListProps) {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">

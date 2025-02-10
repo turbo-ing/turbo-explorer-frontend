@@ -1,7 +1,7 @@
-import { ZkProof } from '@/app/session/[id]/page'
+import { ZkProof } from '@/app/game/[gameId]/session/[sessionId]/page'
 import { Download, Check } from 'lucide-react'
-import NotFoundElement from './NotFoundElement'
-import { Button } from './ui/button'
+import NotFoundElement from '../NotFoundElement'
+import { Button } from '../ui/button'
 
 interface ZkProofSectionProps {
   proofs: ZkProof[]

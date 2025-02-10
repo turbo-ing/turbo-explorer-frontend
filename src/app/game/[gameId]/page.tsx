@@ -31,18 +31,17 @@ async function fetchSessionsBySlug(slug: string): Promise<Session[]> {
 export default async function GamePage({
   params
 }: {
-  params: Promise<{ id: string }>;
+  params: { gameId: string };
 }) {
   let game: Game | null = null;
   let sessions: Session[] = [];
   let error: string | null = null;
 
-  // id = game slug
-  const { id } = await params
-
+  const { gameId } = await params;
+  console.log(gameId);
   try {
-    sessions = await fetchSessionsBySlug(id)
-    game = await fetchGameBySlug(id)
+    sessions = await fetchSessionsBySlug(gameId);
+    game = await fetchGameBySlug(gameId);
   } catch (err) {
     console.error('Error fetching data:', err);
     error = 'Failed to fetch game or session data.';

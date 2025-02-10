@@ -74,7 +74,7 @@ export const columns: ColumnDef<Session>[] = [
     enableSorting: false,
     cell: ({ row }) => (
       <Link
-        href={`/session/${row.original.id}`}
+        href={`/game/${row.original.topic.split("#")[1]}/session/${row.original.id}`}
         className="text-indigo-600 hover:text-indigo-900 flex justify-center lg:justify-normal"
       >
         <Eye className="w-5 h-5" />

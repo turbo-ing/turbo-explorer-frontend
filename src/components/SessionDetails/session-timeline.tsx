@@ -1,5 +1,5 @@
 import { UserPlus, UserMinus } from 'lucide-react'
-import { SessionEvent } from '../turbo-explorer'
+import { SessionEvent } from '@/types'
 
 interface SessionTimelineProps {
   events: SessionEvent[]

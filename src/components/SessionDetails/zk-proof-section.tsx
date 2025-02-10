@@ -1,4 +1,4 @@
-import { ZkProof } from '@/app/game/[gameId]/session/[sessionId]/page'
+import { ZkProof } from '@/types'
 import { Download, Check } from 'lucide-react'
 import NotFoundElement from '../NotFoundElement'
 import { Button } from '../ui/button'

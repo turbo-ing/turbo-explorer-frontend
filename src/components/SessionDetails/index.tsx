@@ -2,32 +2,28 @@
 import SessionTimeline from "./session-timeline";
 import ZKProofSection from "./zk-proof-section";
 import SessionInteractionsList from "./session-interactions-list";
-import { Interaction, Session } from "../turbo-explorer";
-import { SessionEvent } from "../turbo-explorer";
-import { ZkProof } from "@/app/game/[gameId]/session/[sessionId]/page";
+
 import { useCallback, useEffect, useRef, useState } from "react";
 import api from "@/util/api";
 import { Button } from "../ui/button";
 import { RefreshCcw } from "lucide-react";
+import { Interaction, ZkProof, SessionEvent, SessionUpdates } from "@/types";
 
-interface SessionDetailsProps {
+interface SessionDetailsProps extends SessionUpdates {
     sessionId: string;
-    sessionEvents: SessionEvent[];
-    interactions: Interaction[];
-    zkProofs: ZkProof[];
 }
 
 export default function SessionDetails({
     sessionId,
-    sessionEvents,
+    events,
     interactions,
-    zkProofs,
+    proofs,
 }: SessionDetailsProps) {
     const [currentInteractions, setCurrentInteractions] =
         useState<Interaction[]>(interactions || []);
     const [currentSessions, setCurrentSessions] =
-        useState<SessionEvent[]>(sessionEvents || []);
-    const [currentZkProofs, setCurrentZkProofs] = useState<ZkProof[]>(zkProofs || []);
+        useState<SessionEvent[]>(events || []);
+    const [currentZkProofs, setCurrentZkProofs] = useState<ZkProof[]>(proofs || []);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -46,11 +42,11 @@ export default function SessionDetails({
         setError(null);
 
         try {
-            const res = await api().get(`/sessions/session-details/${sessionId}/updates`);
+            const res = await api().get<SessionUpdates>(`sessions/session-details/${sessionId}/updates`);
             const data = res.data;
             setCurrentInteractions(data.interactions);
-            setCurrentSessions(data.sessions);
-            setCurrentZkProofs(data.zkProofs);
+            setCurrentSessions(data.events);
+            setCurrentZkProofs(data.proofs);
         } catch (err) {
             console.error("Error fetching session updates:", err);
             setError("Failed to update session details.");
@@ -86,10 +82,10 @@ export default function SessionDetails({
                 </h1>
                 <div className="flex items-center gap-2 font-light">
                     <p className="text-sm inline-flex items-center gap-2 text-stone-500 w-5">
-                    {countdown}s
+                        {countdown}s
                     </p>
-                    <Button className="size-8" onClick={handleSessionUpdate} disabled={loading}>
-                        <RefreshCcw className={`${loading ? "animate-spin" : ""} w-5 h-5`} />
+                    <Button variant={error ? "destructive" : "default"} className="size-8" onClick={handleSessionUpdate} disabled={loading}>
+                        <RefreshCcw className={`${loading ? "animate-spin direction-reverse" : ""} w-5 h-5`} />
                     </Button>
                 </div>
             </div>

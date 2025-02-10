@@ -1,7 +1,6 @@
 import { columns } from '@/components/GameSessionsTable/columns'
 import GameSessionsTable from '@/components/GameSessionsTable'
-import { Game } from '@/components/turbo-explorer'
-import { Session } from '@/components/turbo-explorer'
+import { Game, Session } from '@/types'
 import api from '@/util/api'
 // import useIframeMessageHandler from '@/hook/useIframeErrorHandler'
 import IsNotIframe from '@/components/IsNotIframe'

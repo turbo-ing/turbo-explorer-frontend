@@ -1,5 +1,5 @@
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
-import { Interaction } from '../turbo-explorer'
+import { Interaction } from '@/types'
 import CeleniumBadge from '../CeleniumBadge'
 import NotFoundElement from '../NotFoundElement'
 import { Button } from '../ui/button'
@@ -13,6 +13,14 @@ interface interactionsListProps {
 }
 
 export default function SessionInteractionsList({ allActions, actions, currentPage, totalPages, onPageChange }: interactionsListProps) {
+
+  // Pagination logic
+  // const indexOfLastAction = currentPage * actionsPerPage
+  // const indexOfFirstAction = indexOfLastAction - actionsPerPage
+  // const currentInteractions = interactions.slice(indexOfFirstAction, indexOfLastAction)
+  // const totalPages = Math.ceil(interactions.length / actionsPerPage)
+
+  // const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">

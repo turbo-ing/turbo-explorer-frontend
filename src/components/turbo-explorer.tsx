@@ -7,53 +7,9 @@ import Container from './Container';
 import Search from './Search';
 import GameStats from './GameStats';
 import { Plus } from 'lucide-react';
+import { Game } from '@/types';
 
 config();
-
-export interface Game {
-  id: number,
-  name: string,
-  description: string,
-  icon?: string,
-  domain_name: string,
-  game_id: string,
-  verification_key: string,
-  session_count: number,
-  interaction_count: number,
-  slug: string,
-  created_at: Date,
-  updated_at: Date,
-  recent_blob_pull: bigint,
-}
-
-export interface Session {
-  id: number,
-  app_id: number,
-  session_id: string,
-  topic: string,
-  interaction_count: number,
-  created_at: Date,
-  updated_at: Date,
-  recent_blob_pull: bigint,
-}
-
-export interface SessionEvent {
-  id: number,
-  session_id: number,
-  peer_id: string,
-  event: string,
-  created_at: Date,
-  recent_blob_pull: bigint,
-}
-
-export interface Interaction {
-  id: number,
-  session_id: number,
-  peer_id: string,
-  body: string,
-  created_at: Date,
-  recent_blob_pull: bigint,
-}
 
 async function getGames(): Promise<Game[]> {
   const { data } = await api().get(`/apps`);

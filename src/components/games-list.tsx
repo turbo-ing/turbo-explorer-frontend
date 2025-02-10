@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Game } from './turbo-explorer'
+import { Game } from '@/types'
 import { Circle } from 'lucide-react'
 import Image from 'next/image'
 

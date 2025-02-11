@@ -1,6 +1,6 @@
 import { columns } from '@/components/GameSessionsTable/columns'
 import GameSessionsTable from '@/components/GameSessionsTable'
-import { Game, Session } from '@/types'
+import { Game, PaginationResult, Session } from '@/types'
 import api from '@/util/api'
 // import useIframeMessageHandler from '@/hook/useIframeErrorHandler'
 import IsNotIframe from '@/components/IsNotIframe'
@@ -22,7 +22,7 @@ async function fetchGameBySlug(slug: string): Promise<Game> {
   return data;
 }
 
-async function fetchSessionsBySlug(slug: string): Promise<Session[]> {
+async function fetchSessionsBySlug(slug: string): Promise<PaginationResult<Session>> {
   const { data } = await api().get(`apps/slug/${slug}/sessions`);
   return data;
 }
@@ -33,7 +33,12 @@ export default async function GamePage({
   params: { gameId: string };
 }) {
   let game: Game | null = null;
-  let sessions: Session[] = [];
+  let sessions: PaginationResult<Session> = {
+    data: [],
+    total: 0,
+    currentPage: 1,
+    totalPages: 1
+  }
   let error: string | null = null;
 
   const { gameId } = await params;
@@ -70,7 +75,7 @@ export default async function GamePage({
         </div>
       </Container>
 
-      <GameSessionsTable columns={columns} data={sessions} />
+      <GameSessionsTable columns={columns} data={sessions.data} />
     </div>
   );
 }

@@ -7,11 +7,11 @@ import Container from './Container';
 import Search from './Search';
 import GameStats from './GameStats';
 import { Plus } from 'lucide-react';
-import { Game } from '@/types';
+import { Game, PaginationResult } from '@/types';
 
 config();
 
-async function getGames(): Promise<Game[]> {
+async function getGames(): Promise<PaginationResult<Game>> {
   const { data } = await api().get(`/apps`);
   return data;
 }
@@ -19,8 +19,8 @@ async function getGames(): Promise<Game[]> {
 export default async function TurboExplorer() {
   const games = await getGames()  
 
-  const totalSessions = games.reduce((sum, game) => sum + game.session_count, 0)
-  const totalInteractions = games.reduce((sum, game) => sum + game.interaction_count, 0)
+  const totalSessions = games.data.reduce((sum, game) => sum + game.session_count, 0)
+  const totalInteractions = games.data.reduce((sum, game) => sum + game.interaction_count, 0)
 
   return (
     <div className="bg-stone-100">
@@ -32,7 +32,7 @@ export default async function TurboExplorer() {
         <Search />
       </Container>
       <Container className='-translate-y-8 -mb-8'>
-      <GameStats games={games} totalSessions={totalSessions} totalInteractions={totalInteractions} />
+      <GameStats games={games.data} totalSessions={totalSessions} totalInteractions={totalInteractions} />
       </Container>
 
       {/* Stats Overview */}
@@ -45,7 +45,7 @@ export default async function TurboExplorer() {
               Add New Game
             </Link>
           </div>
-          <GamesList games={games} />
+          <GamesList games={games.data} />
         </div>
       </Container>
     </div>

@@ -13,11 +13,30 @@ const getSessionDetails = async (sessionId: string, gameSlug: string) => {
   } catch (error) {
     console.error(error)
     return {
-      events: [],
-      interactions: [],
-      proofs: [],
+      events: {
+        data: [],
+        total: 0,
+        currentPage: 1,
+        totalPages: 1
+      },
+      interactions: {
+        data: [],
+        total: 0,
+        currentPage: 1,
+        totalPages: 1
+      },
+      proofs: {
+        data: [],
+        total: 0,
+        currentPage: 1,
+        totalPages: 1
+      },
       appData: {
+        id: 0,
         name: "game",
+        description: "",
+        icon: "",
+        domainName: "",
       },
       session: {
         id: sessionId,
@@ -44,7 +63,7 @@ export default async function SessionPage({
         Back to {sessionDetails.appData.name || "game"}
       </BackButton>
 
-      <SessionDetails sessionId={sessionId} events={sessionDetails.events || []} interactions={sessionDetails.interactions || []} proofs={sessionDetails.proofs || []} />
+      <SessionDetails sessionId={sessionId} events={sessionDetails.events} interactions={sessionDetails.interactions} proofs={sessionDetails.proofs} />
     </Container>
   )
 }

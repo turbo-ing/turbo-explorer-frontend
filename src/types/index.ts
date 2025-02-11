@@ -57,9 +57,9 @@ export interface SessionEvent {
 }
 
 interface BaseSessionData {
-  events: SessionEvent[];
-  interactions: Interaction[];
-  proofs: ZkProof[];
+  events: PaginationResult<SessionEvent>;
+  interactions: PaginationResult<Interaction>;
+  proofs: PaginationResult<ZkProof>;
 }
 
 export interface SessionDetails extends BaseSessionData {
@@ -69,3 +69,10 @@ export interface SessionDetails extends BaseSessionData {
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SessionUpdates extends BaseSessionData {}
+
+export interface PaginationResult<T> {
+  data: T[];
+  total: number;
+  currentPage: number;
+  totalPages: number;
+}

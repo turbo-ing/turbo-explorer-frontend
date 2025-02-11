@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import api from "@/util/api";
 import { Button } from "../ui/button";
 import { RefreshCcw } from "lucide-react";
-import { Interaction, ZkProof, SessionEvent, SessionUpdates } from "@/types";
+import { Interaction, ZkProof, SessionEvent, SessionUpdates, PaginationResult } from "@/types";
 
 interface SessionDetailsProps extends SessionUpdates {
     sessionId: string;
@@ -20,10 +20,24 @@ export default function SessionDetails({
     proofs,
 }: SessionDetailsProps) {
     const [currentInteractions, setCurrentInteractions] =
-        useState<Interaction[]>(interactions || []);
+        useState<PaginationResult<Interaction>>(interactions || {
+            data: [],
+            total: 0,
+            currentPage: 1,
+            totalPages: 1
+        });
     const [currentSessions, setCurrentSessions] =
-        useState<SessionEvent[]>(events || []);
-    const [currentZkProofs, setCurrentZkProofs] = useState<ZkProof[]>(proofs || []);
+        useState<PaginationResult<SessionEvent>>(events || {
+            data: [],
+            total: 0,
+            currentPage: 1,
+            totalPages: 1});
+    const [currentZkProofs, setCurrentZkProofs] = useState<PaginationResult<ZkProof>>(proofs || {
+        data: [],
+        total: 0,
+        currentPage: 1,
+        totalPages: 1
+    });
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -44,9 +58,24 @@ export default function SessionDetails({
         try {
             const res = await api().get<SessionUpdates>(`sessions/session-details/${sessionId}/updates`);
             const data = res.data;
-            setCurrentInteractions(data.interactions);
-            setCurrentSessions(data.events);
-            setCurrentZkProofs(data.proofs);
+            setCurrentInteractions(data.interactions || {
+                data: [],
+                total: 0,
+                currentPage: 1,
+                totalPages: 1
+            });
+            setCurrentSessions(data.events || {
+                data: [],
+                total: 0,
+                currentPage: 1,
+                totalPages: 1
+            });
+            setCurrentZkProofs(data.proofs || {
+                data: [],
+                total: 0,
+                currentPage: 1,
+                totalPages: 1
+            });
         } catch (err) {
             console.error("Error fetching session updates:", err);
             setError("Failed to update session details.");
@@ -90,15 +119,15 @@ export default function SessionDetails({
                 </div>
             </div>
 
-            <SessionTimeline events={currentSessions} />
+            <SessionTimeline events={currentSessions.data} />
             <SessionInteractionsList
-                allActions={interactions}
-                actions={currentInteractions}
-                currentPage={0}
-                totalPages={0}
+                allActions={currentInteractions.data}
+                actions={currentInteractions.data}
+                currentPage={currentInteractions.currentPage}
+                totalPages={currentInteractions.totalPages}
                 onPageChange={() => { }}
             />
-            <ZKProofSection proofs={currentZkProofs} />
+            <ZKProofSection proofs={currentZkProofs.data} />
         </div>
     );
 }

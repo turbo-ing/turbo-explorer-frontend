@@ -20,7 +20,7 @@ export default function GamesList({ games }: GamesListProps) {
                 <Circle className="w-10 h-10 text-turbo-red mr-4" />
               }
               <h3 className="text-xl font-semibold">{game.name}</h3>
-              <p className='text-muted'>{game.id}</p>
+              {/* <p className='text-muted'>{game.id}</p> */}
             </div>
             <div className="text-sm text-stone-600">
               <p>Sessions: {game.session_count}</p>

@@ -75,7 +75,7 @@ export default async function GamePage({
         </div>
       </Container>
 
-      <GameSessionsTable columns={columns} data={sessions.data} />
+      <GameSessionsTable columns={columns} initialData={sessions.data} apiUrl={`/apps/slug/${gameId}/sessions`} />
     </div>
   );
 }

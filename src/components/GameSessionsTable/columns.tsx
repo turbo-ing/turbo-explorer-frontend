@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Session } from "../turbo-explorer";
+import { Session } from "@/types";
 import Link from "next/link";
 import { Eye } from "lucide-react";
 

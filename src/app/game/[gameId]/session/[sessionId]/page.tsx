@@ -2,48 +2,26 @@ import api from '@/util/api'
 import BackButton from '@/components/BackButton'
 import Container from '@/components/Container'
 import SessionDetails from '@/components/SessionDetails'
-import { SessionDetails as SessionDetailsType } from '@/types'
+import { SessionUpdates } from '@/types'
 
 export const dynamic = 'force-dynamic'
 
-const getSessionDetails = async (sessionId: string, gameSlug: string) => {
+const getSessionDetails = async (sessionId: string) => {
   try {
-    const res = await api().get<SessionDetailsType>(`sessions/app/${gameSlug}/session-details/${sessionId}`)
+    const res = await api().get<SessionUpdates>(`sessions/details/${sessionId}`)
     return res.data
   } catch (error) {
     console.error(error)
+    const emptyPaginationResult = {
+      data: [],
+      total: 0,
+      currentPage: 1,
+      totalPages: 1
+    }
     return {
-      events: {
-        data: [],
-        total: 0,
-        currentPage: 1,
-        totalPages: 1
-      },
-      interactions: {
-        data: [],
-        total: 0,
-        currentPage: 1,
-        totalPages: 1
-      },
-      proofs: {
-        data: [],
-        total: 0,
-        currentPage: 1,
-        totalPages: 1
-      },
-      appData: {
-        id: 0,
-        name: "game",
-        description: "",
-        icon: "",
-        domainName: "",
-      },
-      session: {
-        id: sessionId,
-        appId: gameSlug,
-        dateTime: new Date().toISOString(),
-        interactionCount: 0,
-      }
+      events: emptyPaginationResult,
+      interactions: emptyPaginationResult,
+      proofs: emptyPaginationResult,
     }
   }
 }
@@ -55,12 +33,13 @@ export default async function SessionPage({
 }) {
 
   const { gameId, sessionId } = await params;
-  const sessionDetails = await getSessionDetails(sessionId, gameId)
+  const sessionDetails = await getSessionDetails(sessionId)
 
   return (
     <Container className="text-stone-600 bg-stone-100 p-4 sm:p-8 max-w-[1000px]">
       <BackButton href={gameId ? `/game/${gameId}` : '/'} className="mb-4">
-        Back to {sessionDetails.appData.name || "game"}
+        Back to {"game"}
+        {/* Back to {sessionDetails.appData.name || "game"} */}
       </BackButton>
 
       <SessionDetails sessionId={sessionId} events={sessionDetails.events} interactions={sessionDetails.interactions} proofs={sessionDetails.proofs} />

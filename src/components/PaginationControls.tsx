@@ -31,8 +31,8 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
 }) => {
     return (
         pageSize >= 5 && (
-            <div className={`flex flex-row border-t justify-between px-2 ${className}`}>
-                <div className="flex items-center justify-center space-x-1 p-2">
+            <div className={`flex flex-row justify-between sm:px-2 ${className}`}>
+                <div className="flex items-center justify-center space-x-1 sm:p-2">
                     <Button
                     variant="outline"
                     className="h-8 w-8 p-0"
@@ -49,8 +49,8 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
                 >
                     <ChevronLeft className="h-4 w-4" />
                 </Button>
-                <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-                    Page {pageIndex} of {pageCount}
+                <div className="flex-nowrap items-center justify-center text-xs sm:text-sm font-medium">
+                    {pageIndex} of {pageCount}
                 </div>
                 <Button
                     variant="outline"
@@ -69,7 +69,7 @@ const PaginationControls: React.FC<PaginationControlsProps> = ({
                     <ChevronsRight className="h-4 w-4" />
                 </Button>
             </div>
-            <div className="flex items-center justify-center p-2 space-x-2 text-sm">
+            <div className="flex items-center justify-center p-2 space-x-2 text-xs sm:text-sm">
                 <span>Page Size:</span>
                 <select
                     className="border rounded px-2 py-1"

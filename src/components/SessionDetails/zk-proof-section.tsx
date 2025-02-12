@@ -49,6 +49,7 @@ export default function ZKProofSection({ data, onQueryChange, query }: SessionDe
             ))}
             {data.total >= 5 && (
               <PaginationControls
+                className='border-t-0'
                 pageCount={data.totalPages}
                 pageIndex={data.currentPage}
                 pageSize={query.limit || data.total}

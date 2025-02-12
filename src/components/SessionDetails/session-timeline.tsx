@@ -36,7 +36,7 @@ export default function SessionTimeline({ data, onQueryChange, query }: SessionD
         ))}
       </div>
         <PaginationControls
-          className="mt-4"
+          className="mt-4 border-t-0"
           pageCount={data.totalPages}
           pageIndex={data.currentPage}
           pageSize={query.limit || data.total}

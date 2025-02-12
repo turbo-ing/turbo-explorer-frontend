@@ -2,12 +2,10 @@ import { ZkProof } from '@/types'
 import { Download, Check } from 'lucide-react'
 import NotFoundElement from '../NotFoundElement'
 import { Button } from '../ui/button'
+import { SessionDetailsChildrenProps } from '.'
+import PaginationControls from '../PaginationControls'
 
-interface ZkProofSectionProps {
-  proofs: ZkProof[]
-}
-
-export default function ZKProofSection({ proofs }: ZkProofSectionProps) {
+export default function ZKProofSection({ data, onQueryChange, query }: SessionDetailsChildrenProps<ZkProof>) {
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <div className="flex justify-between items-center mb-4">
@@ -16,12 +14,13 @@ export default function ZKProofSection({ proofs }: ZkProofSectionProps) {
         </div>
       </div>
       <div className="space-y-4">
-        {proofs && proofs.length === 0 ? (
+        {data.data.length === 0 ? (
           <NotFoundElement message="No proofs found" />
         ) : (
-          proofs.map((proof) => (
-            <div key={proof.id} className="border-b py-4">
-              <div className="flex justify-between items-start mb-2">
+          <>  
+            {data.data.map((proof) => (
+              <div key={proof.id} className="border-b py-4">
+                <div className="flex justify-between items-start mb-2">
                 <span className="font-medium">Proof {"("}ID: {proof.id}{")"}</span>
                 <span className="text-sm text-stone-500">{new Date(Number(proof.recent_blob_pull)).toLocaleString()}</span>
               </div>
@@ -46,8 +45,20 @@ export default function ZKProofSection({ proofs }: ZkProofSectionProps) {
                   Download Proof
                 </Button> */}
               </div>
-            </div>
-          ))
+              </div>
+            ))}
+            {data.total >= 5 && (
+              <PaginationControls
+                pageCount={data.totalPages}
+                pageIndex={data.currentPage}
+                pageSize={query.limit || data.total}
+                setPageIndex={(num: number) => onQueryChange({ ...query, page: num })}
+              setPageSize={(num: number) => onQueryChange({ ...query, limit: num })}
+              nextPage={() => onQueryChange({ ...query, page: data.currentPage + 1 })}
+              previousPage={() => onQueryChange({ ...query, page: data.currentPage - 1 })}
+            />
+            )}
+            </>
         )}
       </div>
     </div>

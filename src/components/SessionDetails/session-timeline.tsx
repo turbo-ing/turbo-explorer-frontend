@@ -1,11 +1,9 @@
+"use client"
 import { UserPlus, UserMinus } from 'lucide-react'
 import { SessionEvent } from '@/types'
-
-interface SessionTimelineProps {
-  events: SessionEvent[]
-}
-
-export default function SessionTimeline({ events }: SessionTimelineProps) {
+import { SessionDetailsChildrenProps } from ".";
+import PaginationControls from '../PaginationControls';
+export default function SessionTimeline({ data, onQueryChange, query }: SessionDetailsChildrenProps<SessionEvent>) {
   return (
     <div className="bg-white shadow-md rounded-lg p-4 sm:p-8">
       <h2 className="text-xl font-semibold mb-5">Session Timeline</h2>
@@ -15,11 +13,11 @@ export default function SessionTimeline({ events }: SessionTimelineProps) {
           <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 size-2 rounded-full bg-white border-2 border-stone-300" />
         </div>
         {/* A NotFoundElement is not needed here since events will always exist for a valid session */}
-        {events.map((event) => (
+
+        {data.data.map((event) => (
           <div key={event.id} className="pb-3 flex items-center overflow-clip">
-            <div className={`w-8 h-8 min-w-8 min-h-8 rounded-full flex items-center justify-center z-10 ${
-              event.event === 'JOIN' ? 'bg-green-500' : 'bg-red-500'
-            }`}>
+            <div className={`w-8 h-8 min-w-8 min-h-8 rounded-full flex items-center justify-center z-10 ${event.event === 'JOIN' ? 'bg-green-500' : 'bg-red-500'
+              }`}>
               {event.event === 'JOIN' ? (
                 <UserPlus className="w-4 h-4 text-white" />
               ) : (
@@ -37,6 +35,15 @@ export default function SessionTimeline({ events }: SessionTimelineProps) {
           </div>
         ))}
       </div>
+        <PaginationControls
+          className="mt-4"
+          pageCount={data.totalPages}
+          pageIndex={data.currentPage}
+          pageSize={query.limit || data.total}
+          setPageIndex={(num: number) => onQueryChange({ ...query, page: num })}
+          setPageSize={(num: number) => onQueryChange({ ...query, limit: num })}
+          nextPage={() => onQueryChange({ ...query, page: data.currentPage + 1 })}
+          previousPage={() => onQueryChange({ ...query, page: data.currentPage - 1 })} />
     </div>
   )
 }

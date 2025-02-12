@@ -5,8 +5,6 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   SortingState,
   useReactTable,
 } from "@tanstack/react-table";
@@ -21,20 +19,15 @@ import {
 } from "@/components/ui/table";
 
 import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
   ArrowUp,
   ArrowDown,
 } from "lucide-react";
 
-import { Button } from "../ui/button";
-import { PaginationResult, Session } from "@/types";
+import { PaginationResult } from "@/types";
 import api from "@/util/api";
 import { useEffect } from "react";
 import { AxiosResponse } from "axios";
-
+import PaginationControls from "../PaginationControls";
 interface GameSessionTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   initialData: TData[];
@@ -82,23 +75,29 @@ export default function GameSessionsTable<TData, TValue>({
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      const queryParams = new URLSearchParams();
-      queryParams.set("page", (pagination.pageIndex + 1).toString());
-      queryParams.set("limit", pagination.pageSize.toString());
-      if (sorting.length > 0) {
-        // Here we assume you only use the first sort criterion
-        queryParams.set("sortBy", sorting[0].id);
-        queryParams.set("sortOrder", sorting[0].desc ? "DESC" : "ASC");
-      }
+      try {
+        const queryParams = new URLSearchParams();
+        queryParams.set("page", (pagination.pageIndex + 1).toString());
+        queryParams.set("limit", pagination.pageSize.toString());
+        if (sorting.length > 0) {
+          // Only using the first sort criterion for now
+          queryParams.set("sortBy", sorting[0].id);
+          queryParams.set("sortOrder", sorting[0].desc ? "DESC" : "ASC");
+        }
 
-      const res: AxiosResponse<PaginationResult<TData>> = await api().get(apiUrl, {
-        params: queryParams,
-      });
-      console.log(res);
-      setData(res.data.data);
-      setPageCount(res.data.totalPages);
-      setLoading(false);
+        const res: AxiosResponse<PaginationResult<TData>> = await api().get(apiUrl, {
+          params: queryParams,
+        });
+        setData(res.data.data);
+        setPageCount(res.data.totalPages);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Optionally, set an error state to display a message in the UI
+      } finally {
+        setLoading(false);
+      }
     };
+
     fetchData();
   }, [pagination, sorting]);
 
@@ -163,68 +162,11 @@ export default function GameSessionsTable<TData, TValue>({
           )}
         </TableBody>
       </Table>
-
-      {/* Pagination Controls */}
-      <div className="flex flex-row border-t justify-between px-2">
-        <div className="flex items-center justify-center space-x-2 p-2">
-          <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
-            onClick={() => table.setPageIndex(0)}
-            disabled={pagination.pageIndex === 0}
-          >
-            <span className="sr-only">Go to first page</span>
-            <ChevronsLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
-            onClick={() => table.previousPage()}
-            disabled={pagination.pageIndex === 0}
-          >
-            <span className="sr-only">Go to previous page</span>
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {pagination.pageIndex + 1} of {pageCount}
-          </div>
-          <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
-            onClick={() => table.nextPage()}
-            disabled={pagination.pageIndex + 1 >= pageCount}
-          >
-            <span className="sr-only">Go to next page</span>
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
-            onClick={() => table.setPageIndex(pageCount - 1)}
-            disabled={pagination.pageIndex + 1 >= pageCount}
-          >
-            <span className="sr-only">Go to last page</span>
-            <ChevronsRight className="h-4 w-4" />
-          </Button>
-        </div>
-
-        <div className="flex items-center justify-center p-2 space-x-2 text-sm">
-          <span>Page Size:</span>
-          <select
-            className="border rounded px-2 py-1"
-            value={pagination.pageSize}
-            onChange={(e) => {
-              table.setPageSize(Number(e.target.value));
-            }}
-          >
-            {[5, 10, 20, 30].map((pageSize) => (
-              <option key={pageSize} value={pageSize}>
-                {pageSize}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
+      {
+        pageCount > 1 && (
+          <PaginationControls pageCount={pageCount} setPageIndex={table.setPageIndex} setPageSize={(num) => table.setPageSize(num)} nextPage={table.nextPage} previousPage={table.previousPage} pageIndex={pagination.pageIndex + 1} pageSize={pagination.pageSize} />
+        )
+      }
     </div>
   );
 }

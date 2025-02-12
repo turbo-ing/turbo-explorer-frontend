@@ -111,7 +111,7 @@ function SessionDetails({
     useEffect(() => {
         refetchEvents();
         console.log("refetching events with query", eventsQuery);
-    }, [eventsQuery]);
+    }, [eventsQuery, refetchEvents]);
 
     const {
         data: interactionsData,
@@ -128,7 +128,7 @@ function SessionDetails({
 
     useEffect(() => {
         refetchInteractions();
-    }, [interactionsQuery]);
+    }, [interactionsQuery, refetchInteractions]);
 
     const {
         data: proofsData,
@@ -145,7 +145,7 @@ function SessionDetails({
 
     useEffect(() => {
         refetchProofs();
-    }, [proofsQuery]);
+    }, [proofsQuery, refetchProofs]);
 
     const isFetching = isFetchingEvents || isFetchingInteractions || isFetchingProofs;
 
@@ -223,8 +223,11 @@ function SessionDetails({
                     </Button>
                 </div>
             </div>
-
-            <SessionTimeline onQueryChange={setEventsQuery} query={eventsQuery} data={currentEvents} />
+            <SessionTimeline
+                onQueryChange={setEventsQuery}
+                query={eventsQuery}
+                data={currentEvents}
+            />
             <SessionInteractionsList
                 data={currentInteractions}
                 onQueryChange={setInteractionsQuery}

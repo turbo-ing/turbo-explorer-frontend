@@ -35,7 +35,7 @@ async function fetchSessionsBySlug(slug: string): Promise<PaginationResult<Sessi
 export default async function GamePage({
   params
 }: {
-  params: { gameId: string };
+  params: Promise<{ gameId: string }>;
 }) {
   let game: Game | null = null;
   let sessions: PaginationResult<Session> = {

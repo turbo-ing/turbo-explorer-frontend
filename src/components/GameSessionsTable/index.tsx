@@ -48,7 +48,6 @@ export default function GameSessionsTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([
     { id: "recent_blob_pull", desc: true },
   ]);
-  const [loading, setLoading] = React.useState(false);
 
   const table = useReactTable({
     data,
@@ -73,7 +72,6 @@ export default function GameSessionsTable<TData, TValue>({
   });
 
   useEffect(() => {
-    setLoading(true);
     const fetchData = async () => {
       try {
         const queryParams = new URLSearchParams();
@@ -92,14 +90,11 @@ export default function GameSessionsTable<TData, TValue>({
         setPageCount(res.data.totalPages);
       } catch (error) {
         console.error("Error fetching data:", error);
-        // Optionally, set an error state to display a message in the UI
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchData();
-  }, [pagination, sorting]);
+  }, [pagination, sorting, apiUrl]);
 
   return (
     <div className="lg:rounded-lg bg-white h-full max-w-[1200px] mx-auto lg:mb-4">

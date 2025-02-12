@@ -8,7 +8,7 @@ import PaginationControls from '../PaginationControls'
 export default function ZKProofSection({ data, onQueryChange, query }: SessionDetailsChildrenProps<ZkProof>) {
 
   const handleNextPrev = (num: number) => {
-    let oldPage = Number(data.currentPage)
+    const oldPage = Number(data.currentPage)
     const newPage = oldPage + num
     const guardedPage = handleWithinBounds(newPage)
     onQueryChange({ ...query, page: guardedPage})

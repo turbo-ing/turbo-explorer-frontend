@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { Game } from './turbo-explorer';
+import { Game } from '@/types';
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 import api from '@/util/api';

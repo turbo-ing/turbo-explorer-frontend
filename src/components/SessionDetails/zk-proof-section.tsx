@@ -52,12 +52,11 @@ export default function ZKProofSection({ data, onQueryChange, query }: SessionDe
                 className='border-t-0'
                 pageCount={data.totalPages}
                 pageIndex={data.currentPage}
-                pageSize={query.limit || data.total}
-                setPageIndex={(num: number) => onQueryChange({ ...query, page: num })}
-              setPageSize={(num: number) => onQueryChange({ ...query, limit: num })}
-              nextPage={() => onQueryChange({ ...query, page: data.currentPage + 1 })}
-              previousPage={() => onQueryChange({ ...query, page: data.currentPage - 1 })}
-            />
+                pageSize={query.limit || 10}
+                setPageIndex={(num: number) => onQueryChange({ ...query, page: num < 1 ? 1 : num > data.totalPages ? data.totalPages : num })}
+                setPageSize={(num: number) => onQueryChange({ ...query, limit: num })}
+                nextPage={() => onQueryChange({ ...query, page: Number(data.currentPage) + 1 })} 
+                previousPage={() => onQueryChange({ ...query, page: Number(data.currentPage) - 1 })} />
             )}
             </>
         )}

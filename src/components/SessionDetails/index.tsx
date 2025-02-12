@@ -33,12 +33,15 @@ function constructNamespaceQueryObject(queryParams: QueryParams) {
 // Utility to build the query object:
 // events[page] = 2, events[limit] = 10, ...
 function constructQueryObject(dto: FilterPaginationDto) {
-    const queryParams = new URLSearchParams();
-  Object.entries(dto).forEach(([key, value]) => {
-    queryParams.set(key, value.toString());
-  });
-  return queryParams.toString();
-}
+    const queryParams: Record<string, string> = {};
+    Object.entries(dto).forEach(([key, value]) => {
+      if (value !== undefined) {
+        queryParams[key] = value.toString();
+      }
+    });
+    return queryParams; 
+  }
+  
 // API fetchers
 async function fetchEvents(sessionId: string, params: FilterPaginationDto) {
   const queryObj = constructQueryObject(params);

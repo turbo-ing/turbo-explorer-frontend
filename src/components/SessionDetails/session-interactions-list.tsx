@@ -1,20 +1,14 @@
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 import { Interaction } from '@/types'
 import CeleniumBadge from '../CeleniumBadge'
 import NotFoundElement from '../NotFoundElement'
-import { Button } from '../ui/button'
 import PaginationControls from '../PaginationControls'
 import { SessionDetailsChildrenProps } from '.'
-
+import { useEffect } from 'react'
 export default function SessionInteractionsList({ data, onQueryChange, query }: SessionDetailsChildrenProps<Interaction>) {
 
-  // Pagination logic
-  // const indexOfLastAction = currentPage * actionsPerPage
-  // const indexOfFirstAction = indexOfLastAction - actionsPerPage
-  // const currentInteractions = interactions.slice(indexOfFirstAction, indexOfLastAction)
-  // const totalPages = Math.ceil(interactions.length / actionsPerPage)
-
-  // const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
+  useEffect(() => {
+    console.log('currentPage', data.currentPage, typeof data.currentPage)
+  }, [data.currentPage])
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
@@ -46,14 +40,13 @@ export default function SessionInteractionsList({ data, onQueryChange, query }: 
             className="border-t-0 mt-2"
             pageCount={data.totalPages}
             pageIndex={data.currentPage}
-            pageSize={query.limit || data.total}
-            setPageIndex={(num: number) => onQueryChange({ ...query, page: num })}
+            pageSize={query.limit || 10}
+            setPageIndex={(num: number) => onQueryChange({ ...query, page: num < 1 ? 1 : num > data.totalPages ? data.totalPages : num })}
             setPageSize={(num: number) => onQueryChange({ ...query, limit: num })}
-            nextPage={() => onQueryChange({ ...query, page: data.currentPage + 1 })}
-            previousPage={() => onQueryChange({ ...query, page: data.currentPage - 1 })} />
+            nextPage={() => onQueryChange({ ...query, page: Number(data.currentPage) + 1 })}
+            previousPage={() => onQueryChange({ ...query, page: Number(data.currentPage) - 1 })} />
         </>
       )}
     </div>
   )
 }
-

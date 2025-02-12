@@ -39,11 +39,11 @@ export default function SessionTimeline({ data, onQueryChange, query }: SessionD
           className="mt-4 border-t-0"
           pageCount={data.totalPages}
           pageIndex={data.currentPage}
-          pageSize={query.limit || data.total}
-          setPageIndex={(num: number) => onQueryChange({ ...query, page: num })}
+          pageSize={query.limit || 10}
+          setPageIndex={(num: number) => onQueryChange({ ...query, page: num < 1 ? 1 : num > data.totalPages ? data.totalPages : num})}
           setPageSize={(num: number) => onQueryChange({ ...query, limit: num })}
-          nextPage={() => onQueryChange({ ...query, page: data.currentPage + 1 })}
-          previousPage={() => onQueryChange({ ...query, page: data.currentPage - 1 })} />
+          nextPage={() => onQueryChange({ ...query, page: Number(data.currentPage) + 1 })}
+          previousPage={() => onQueryChange({ ...query, page: Number(data.currentPage) - 1 })} />
     </div>
   )
 }

@@ -13,13 +13,16 @@ const api = (fetchOptions?: Record<string, any>) => axios.create({
     ...fetchOptions},
 });
 
-// api().interceptors.response.use(
-//   response => response, // Pass successful responses
-//   error => { // Error everything else
-//     console.error('API Error:', error.response?.data || error.message);
-//     return Promise.reject(error);
-//   }
-// );
+api().interceptors.response.use(
+  response => {
+    console.log('API Request URL:', response.config.url);
+    return response; // Pass successful responses
+  },
+  error => { // Error everything else
+    console.error('API Error:', error.response?.data || error.message);
+    return Promise.reject(error);
+  }
+);
 
 
 export default api;

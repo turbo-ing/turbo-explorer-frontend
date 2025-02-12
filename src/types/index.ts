@@ -62,6 +62,7 @@ interface BaseSessionData {
   proofs: PaginationResult<ZkProof>;
 }
 
+// TODO: remove session from the response
 export interface SessionDetails extends BaseSessionData {
   session: Session;
   appData: Game;

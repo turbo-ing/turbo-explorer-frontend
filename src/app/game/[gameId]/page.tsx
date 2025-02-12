@@ -23,7 +23,12 @@ async function fetchGameBySlug(slug: string): Promise<Game> {
 }
 
 async function fetchSessionsBySlug(slug: string): Promise<PaginationResult<Session>> {
-  const { data } = await api().get(`apps/slug/${slug}/sessions`);
+  const queryParams = new URLSearchParams();
+  queryParams.set("sortBy", "recent_blob_pull");
+  queryParams.set("sortOrder", "DESC");
+  const { data } = await api().get(`apps/slug/${slug}/sessions`, {
+    params: queryParams,
+  });
   return data;
 }
 

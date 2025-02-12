@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Session } from "@/types";
 import Link from "next/link";
 import { Eye } from "lucide-react";
+import LocalDate from "./LocalDate";
 
 // Helper function to display "X time "
 function formatTimeAgo(date: Date | string): string {
@@ -56,13 +57,13 @@ export const columns: ColumnDef<Session>[] = [
     accessorKey: "recent_blob_pull",
     header: "Age",
     cell: ({ row }) =>
-      formatTimeAgo(new Date(Number(row.original.recent_blob_pull))),
+        formatTimeAgo(new Date(Number(row.original.recent_blob_pull))),
   },
   {
     accessorKey: "created_at",
     header: "Created At",
     cell: ({ row }) =>
-      new Date(Number(row.original.recent_blob_pull)).toLocaleString(),
+      LocalDate(new Date(Number(row.original.recent_blob_pull))),
   },
   {
     accessorKey: "interaction_count",

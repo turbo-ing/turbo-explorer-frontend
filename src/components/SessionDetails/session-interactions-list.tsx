@@ -3,12 +3,21 @@ import CeleniumBadge from '../CeleniumBadge'
 import NotFoundElement from '../NotFoundElement'
 import PaginationControls from '../PaginationControls'
 import { SessionDetailsChildrenProps } from '.'
-import { useEffect } from 'react'
 export default function SessionInteractionsList({ data, onQueryChange, query }: SessionDetailsChildrenProps<Interaction>) {
 
-  useEffect(() => {
-    console.log('currentPage', data.currentPage, typeof data.currentPage)
-  }, [data.currentPage])
+  const handleNextPrev = (num: number) => {
+    let oldPage = data.currentPage
+    if(typeof num === 'string'){
+      oldPage = Number(oldPage)
+    }
+    const newPage = oldPage + num
+    const guardedPage = handleWithinBounds(newPage)
+    onQueryChange({ ...query, page: guardedPage})
+  }
+
+  const handleWithinBounds = (num: number) => {
+    return num < 1 ? 1 : num > data.totalPages ? data.totalPages : num
+  }
 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
@@ -41,10 +50,10 @@ export default function SessionInteractionsList({ data, onQueryChange, query }: 
             pageCount={data.totalPages}
             pageIndex={data.currentPage}
             pageSize={query.limit || 10}
-            setPageIndex={(num: number) => onQueryChange({ ...query, page: num < 1 ? 1 : num > data.totalPages ? data.totalPages : num })}
+            setPageIndex={(num: number) => onQueryChange({ ...query, page: handleWithinBounds(num) })}
             setPageSize={(num: number) => onQueryChange({ ...query, limit: num })}
-            nextPage={() => onQueryChange({ ...query, page: Number(data.currentPage) + 1 })}
-            previousPage={() => onQueryChange({ ...query, page: Number(data.currentPage) - 1 })} />
+            nextPage={() => handleNextPrev(1)}
+            previousPage={() => handleNextPrev(-1)} />
         </>
       )}
     </div>

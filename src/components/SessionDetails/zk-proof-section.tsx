@@ -6,6 +6,21 @@ import { SessionDetailsChildrenProps } from '.'
 import PaginationControls from '../PaginationControls'
 
 export default function ZKProofSection({ data, onQueryChange, query }: SessionDetailsChildrenProps<ZkProof>) {
+
+  const handleNextPrev = (num: number) => {
+    let oldPage = data.currentPage
+    if(typeof num === 'string'){
+      oldPage = Number(oldPage)
+    }
+    const newPage = oldPage + num
+    const guardedPage = handleWithinBounds(newPage)
+    onQueryChange({ ...query, page: guardedPage})
+  }
+
+  const handleWithinBounds = (num: number) => {
+    return num < 1 ? 1 : num > data.totalPages ? data.totalPages : num
+  }
+
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <div className="flex justify-between items-center mb-4">
@@ -53,10 +68,10 @@ export default function ZKProofSection({ data, onQueryChange, query }: SessionDe
                 pageCount={data.totalPages}
                 pageIndex={data.currentPage}
                 pageSize={query.limit || 10}
-                setPageIndex={(num: number) => onQueryChange({ ...query, page: num < 1 ? 1 : num > data.totalPages ? data.totalPages : num })}
+                setPageIndex={(num: number) => onQueryChange({ ...query, page: handleWithinBounds(num) })}  
                 setPageSize={(num: number) => onQueryChange({ ...query, limit: num })}
-                nextPage={() => onQueryChange({ ...query, page: Number(data.currentPage) + 1 })} 
-                previousPage={() => onQueryChange({ ...query, page: Number(data.currentPage) - 1 })} />
+                nextPage={() => handleNextPrev(1)} 
+                previousPage={() => handleNextPrev(-1)} />
             )}
             </>
         )}

@@ -22,7 +22,7 @@ export default function SessionInteractionsList({ data, onQueryChange, query }: 
           {data.data.map((action) => {
             const parsedBody = JSON.parse(action.body)
             return (
-              <div key={action.id} className="border-y py-4">
+              <div key={action.id} className={`py-4 ${data.data.indexOf(action) === data.data.length - 1 ? 'border-t border-b' : 'border-t'}`}>
                 <div className="flex justify-between items-start mb-2">
                   <span className="font-medium">{parsedBody.data.type}</span>
                   <span className="text-sm text-stone-500">

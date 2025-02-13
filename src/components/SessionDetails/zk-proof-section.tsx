@@ -18,13 +18,12 @@ export default function ZKProofSection({ data, onQueryChange, query }: SessionDe
       onLimitChange={(limit: number) => onQueryChange({ ...query, limit })}
     >
       {data.data.map((proof) => (
-        <div key={proof.id} className="border-b py-4">
-          <div className="flex justify-between items-start mb-2">
-            <span className="font-medium">Proof {proof.id}</span>
-            <span className="text-sm text-stone-500">
-              {new Date(Number(proof.recent_blob_pull)).toLocaleString()}
-            </span>
-          </div>
+        <div key={proof.id} className={`py-4 ${data.data.indexOf(proof) === data.data.length - 1 ? 'border-t border-b' : 'border-t'}`}>          <div className="flex justify-between items-start mb-2">
+          <span className="font-medium">Proof {proof.id}</span>
+          <span className="text-sm text-stone-500">
+            {new Date(Number(proof.recent_blob_pull)).toLocaleString()}
+          </span>
+        </div>
           <pre className="bg-stone-100 p-2 rounded text-sm overflow-x-auto mb-4">
             {JSON.stringify(JSON.parse(proof.proof), null, 1)}
           </pre>

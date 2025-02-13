@@ -153,7 +153,6 @@ function SessionDetails({
             proofs: proofsQuery,
         };
         const qs = constructNamespaceQueryObject(queryParams);
-        console.log("qs:", qs);
         const res = await api().get<SessionUpdates>(`sessions/details/${sessionId}`, { params: qs });
 
         const combinedData = res.data;

@@ -19,7 +19,7 @@ export default function SessionInteractionsList({ data, onQueryChange, query }: 
   return (
     <div className="bg-white shadow-md rounded-lg p-6">
       <h2 className="text-2xl font-semibold mb-1"> Session Interactions</h2>
-      {data.data.length === 0 ? (
+      {data.total === 0 ? (
         <NotFoundElement message="No interactions found" />
       ) : (
         <>

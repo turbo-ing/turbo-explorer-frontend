@@ -26,7 +26,7 @@ export default function ZKProofSection({ data, onQueryChange, query }: SessionDe
         </div>
       </div>
       <div className="space-y-4">
-        {data.data.length === 0 ? (
+        {data.total === 0 ? (
           <NotFoundElement message="No proofs found" />
         ) : (
           <>  

@@ -111,7 +111,6 @@ function SessionDetails({
     const [interactionsQuery, setInteractionsQuery] = useState<FilterPaginationDto>({});
     const [proofsQuery, setProofsQuery] = useState<FilterPaginationDto>({});
 
-    // We can safely remove manual `refetch` calls in useEffect. 
     // React Query re-fetches automatically when the query key changes.
     const {
         data: eventsData,
@@ -121,8 +120,7 @@ function SessionDetails({
         // Stringify to ensure stable comparison if the object changes deeply
         queryKey: ["sessionEvents", sessionId, JSON.stringify(eventsQuery)],
         queryFn: () => fetchEvents(sessionId, eventsQuery),
-        placeholderData: events, // Instead of `initialData`
-        staleTime: 0,            // Mark data as immediately stale so re-fetch occurs
+        placeholderData: events,
     });
 
     const {
@@ -155,10 +153,12 @@ function SessionDetails({
             proofs: proofsQuery,
         };
         const qs = constructNamespaceQueryObject(queryParams);
+        console.log("qs:", qs);
         const res = await api().get<SessionUpdates>(`sessions/details/${sessionId}`, { params: qs });
+
         const combinedData = res.data;
-    
-        // Update the caches with the same query keys used in your useQuery hooks.
+
+        // Update the caches with the same query keys used in useQuery hooks.
         queryClient.setQueryData(
             ["sessionEvents", sessionId, JSON.stringify(eventsQuery)],
             combinedData.events
@@ -172,47 +172,37 @@ function SessionDetails({
             combinedData.proofs
         );
     }, [sessionId, eventsQuery, interactionsQuery, proofsQuery]);
-    
+
 
     const [countdown, setCountdown] = useState(REFRESH_INTERVAL_MS / 1000);
 
     useEffect(() => {
         const timer = setInterval(() => {
-          setCountdown(prevCountdown => {
-            if (prevCountdown <= 1) {
-              refreshAllData();
-              return REFRESH_INTERVAL_MS / 1000;
-            }
-            return prevCountdown - 1;
-          });
+            setCountdown(prevCountdown => {
+                if (prevCountdown <= 1) {
+                    refreshAllData();
+                    return REFRESH_INTERVAL_MS / 1000;
+                }
+                return prevCountdown - 1;
+            });
         }, 1000);
-    
-        // Clean up the interval on component unmount
+
         return () => clearInterval(timer);
-      }, [refreshAllData]);
-    
+    }, [refreshAllData]);
+
 
     const isFetching = isFetchingEvents || isFetchingInteractions || isFetchingProofs;
     const isError = isErrorEvents || isErrorInteractions || isErrorProofs;
+    const emptyData = {
+        data: [],
+        total: 0,
+        currentPage: 1,
+        totalPages: 1,
+    };
 
-    const currentEvents = eventsData ?? {
-        data: [],
-        total: 0,
-        currentPage: 1,
-        totalPages: 1,
-    };
-    const currentInteractions = interactionsData ?? {
-        data: [],
-        total: 0,
-        currentPage: 1,
-        totalPages: 1,
-    };
-    const currentProofs = proofsData ?? {
-        data: [],
-        total: 0,
-        currentPage: 1,
-        totalPages: 1,
-    };
+    const currentEvents = eventsData ?? emptyData;
+    const currentInteractions = interactionsData ?? emptyData;
+    const currentProofs = proofsData ?? emptyData;
 
     return (
         <div className="space-y-8">

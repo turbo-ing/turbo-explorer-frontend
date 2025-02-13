@@ -31,7 +31,7 @@ function constructNamespaceQueryObject(queryParams: QueryParams) {
 }
 
 // Utility to build the query object:
-// events[page] = 2, events[limit] = 10, ...
+// page=2 & limit=10 ...
 function constructQueryObject(dto: FilterPaginationDto) {
     const queryParams: Record<string, string> = {};
     Object.entries(dto).forEach(([key, value]) => {
